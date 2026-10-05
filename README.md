@@ -10,6 +10,22 @@
 
 ---
 
+## 📸 Interface & Preview
+
+<p align="center">
+  <img src="docs/landing-preview.png" alt="JagaDocs Landing & Drag-and-Drop Hub" width="100%" />
+</p>
+<p align="center"><em>1. Drop zone and instant sample loader supporting multi-page PDFs and batch photos.</em></p>
+
+<br/>
+
+<p align="center">
+  <img src="docs/editor-preview.png" alt="JagaDocs Real-Time Watermark Studio" width="100%" />
+</p>
+<p align="center"><em>2. Real-time watermark studio with interactive canvas, token parser, typography controls, and 9-grid/tile positioning.</em></p>
+
+---
+
 ## 🌟 Key Features
 
 ### 📄 Multi-Page PDF Watermarking
@@ -129,6 +145,9 @@ npm run preview
 
 ```
 jagadocs/
+├── docs/                         # Documentation screenshots & application previews
+│   ├── landing-preview.png       # Landing and upload dropzone view
+│   └── editor-preview.png        # Watermark editor and preview canvas view
 ├── src/
 │   ├── components/
 │   │   ├── Header.tsx            # Navigation, branding & 1-click preset selector
