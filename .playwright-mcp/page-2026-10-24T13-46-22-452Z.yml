@@ -1,0 +1,17 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - link [ref=e4] [cursor=pointer]:
+        - /url: "#/"
+    - main [ref=e82]:
+      - link "All tools" [ref=e83] [cursor=pointer]:
+        - /url: "#/"
+      - generic [ref=e91]:
+        - heading "Crop PDF" [level=1] [ref=e92]
+        - paragraph [ref=e93]: Trim the margins off every page.
+      - generic [ref=e95] [cursor=pointer]:
+        - generic [ref=e99]: Choose a PDF
+        - generic [ref=e100]: or drop a file here
+  - iframe [ref=e81]:
+    - button "Powered by Netlify — build your own site" [ref=f1e3] [cursor=pointer]:
+      - generic [ref=f1e13]: Powered by Netlify

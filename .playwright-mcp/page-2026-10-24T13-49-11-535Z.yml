@@ -1,0 +1,50 @@
+- generic [ref=f1e4]:
+  - banner [ref=f1e5]:
+    - generic [ref=f1e6]:
+      - button "Return to JagaDocs Home" [ref=f1e7] [cursor=pointer]:
+        - generic [ref=f1e12]: JagaDocs
+      - generic [ref=f1e13]: 100% Private in Browser • No Server Uploads
+  - main [ref=f1e18]:
+    - generic [ref=f1e19]:
+      - generic [ref=f1e20]:
+        - heading "Every document and photo tool you need" [level=1] [ref=f1e21]
+        - paragraph [ref=f1e22]: Free and private. Your files are processed locally in your browser memory and never uploaded.
+      - generic [ref=f1e23]:
+        - link "Vector Watermark PDF Add vector text, dynamic page numbers, and transparent stamps to multi-page PDFs. Open tool" [ref=f1e24] [cursor=pointer]:
+          - /url: "#/watermark-pdf"
+          - generic [ref=f1e25]:
+            - generic [ref=f1e26]: Vector
+            - generic [ref=f1e32]:
+              - strong [ref=f1e33]: Watermark PDF
+              - paragraph [ref=f1e34]: Add vector text, dynamic page numbers, and transparent stamps to multi-page PDFs.
+          - generic [ref=f1e35]: Open tool
+        - link "Batch Watermark Photo & Image Batch watermark photos with 9-grid snapping, custom positions, or tile repeat. Open tool" [ref=f1e39] [cursor=pointer]:
+          - /url: "#/watermark-image"
+          - generic [ref=f1e40]:
+            - generic [ref=f1e41]: Batch
+            - generic [ref=f1e48]:
+              - strong [ref=f1e49]: Watermark Photo & Image
+              - paragraph [ref=f1e50]: Batch watermark photos with 9-grid snapping, custom positions, or tile repeat.
+          - generic [ref=f1e51]: Open tool
+        - link "Precision Crop & Trim PDF Trim margins, clean dark scanner edges, and auto-detect white borders. Open tool" [ref=f1e55] [cursor=pointer]:
+          - /url: "#/crop-pdf"
+          - generic [ref=f1e56]:
+            - generic [ref=f1e57]: Precision
+            - generic [ref=f1e63]:
+              - strong [ref=f1e64]: Crop & Trim PDF
+              - paragraph [ref=f1e65]: Trim margins, clean dark scanner edges, and auto-detect white borders.
+          - generic [ref=f1e66]: Open tool
+        - link "PDF to JPG / PNG Extract and convert every PDF page into clean, high-resolution images. Open tool" [ref=f1e70] [cursor=pointer]:
+          - /url: "#/pdf-to-image"
+          - generic [ref=f1e79]:
+            - strong [ref=f1e80]: PDF to JPG / PNG
+            - paragraph [ref=f1e81]: Extract and convert every PDF page into clean, high-resolution images.
+          - generic [ref=f1e82]: Open tool
+        - link "Image to PDF Combine multiple JPG, PNG, or WebP images into a single clean PDF document. Open tool" [ref=f1e86] [cursor=pointer]:
+          - /url: "#/image-to-pdf"
+          - generic [ref=f1e94]:
+            - strong [ref=f1e95]: Image to PDF
+            - paragraph [ref=f1e96]: Combine multiple JPG, PNG, or WebP images into a single clean PDF document.
+          - generic [ref=f1e97]: Open tool
+      - generic [ref=f1e101]: Files never leave your computer • 100% client-side WebAssembly & Canvas
+  - contentinfo [ref=f1e106]: JagaDocs • Free, client-side document and photo utility.

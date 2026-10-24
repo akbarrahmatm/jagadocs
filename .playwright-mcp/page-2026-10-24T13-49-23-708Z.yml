@@ -1,0 +1,19 @@
+- generic [ref=f1e107]:
+  - banner [ref=f1e108]:
+    - generic [ref=f1e109]:
+      - button "Return to JagaDocs Home" [ref=f1e110] [cursor=pointer]:
+        - generic [ref=f1e115]: JagaDocs
+      - generic [ref=f1e116]: 100% Private in Browser • No Server Uploads
+  - main [ref=f1e121]:
+    - generic [ref=f1e122]:
+      - button "All tools" [ref=f1e124] [cursor=pointer]
+      - generic [ref=f1e128]:
+        - heading "Crop & Trim PDF" [level=1] [ref=f1e129]
+        - paragraph [ref=f1e130]: Trim margins, clean dark scanner edges, and auto-detect white borders.
+      - generic [ref=f1e136] [cursor=pointer]:
+        - button "Choose a PDF or Document" [ref=f1e137]
+        - paragraph [ref=f1e138]: or drop files here (.pdf, .png, .jpg)
+      - generic [ref=f1e139]:
+        - generic [ref=f1e140]: Don't have a file ready?
+        - button "Try with a sample document" [ref=f1e141] [cursor=pointer]
+  - contentinfo [ref=f1e146]: JagaDocs • 100% processed locally in browser memory.

@@ -1,0 +1,45 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - navigation [ref=f2e3]:
+      - link [ref=f2e4] [cursor=pointer]:
+        - /url: "#/"
+    - banner [ref=f2e9]:
+      - heading "Every PDF tool you need" [level=1] [ref=f2e10]
+      - paragraph [ref=f2e11]: Free and private. Your files are processed in your browser and never uploaded.
+    - main [ref=f2e12]:
+      - generic [ref=f2e13]:
+        - link "Merge PDF Combine several PDFs into one, in the order you choose." [ref=f2e14] [cursor=pointer]:
+          - /url: "#/merge-pdf"
+          - strong [ref=f2e20]: Merge PDF
+          - generic [ref=f2e21]: Combine several PDFs into one, in the order you choose.
+        - link "Split PDF Pull out page ranges, or split every page into its own PDF." [ref=f2e22] [cursor=pointer]:
+          - /url: "#/split-pdf"
+          - strong [ref=f2e29]: Split PDF
+          - generic [ref=f2e30]: Pull out page ranges, or split every page into its own PDF.
+        - link "Compress PDF Reduce PDF file size while keeping it readable." [ref=f2e31] [cursor=pointer]:
+          - /url: "#/compress-pdf"
+          - strong [ref=f2e38]: Compress PDF
+          - generic [ref=f2e39]: Reduce PDF file size while keeping it readable.
+        - link "Organize PDF Reorder or remove pages, then save a new PDF." [ref=f2e40] [cursor=pointer]:
+          - /url: "#/organize-pdf"
+          - strong [ref=f2e47]: Organize PDF
+          - generic [ref=f2e48]: Reorder or remove pages, then save a new PDF.
+        - link "Rotate PDF Rotate all pages or just the ones that are sideways." [ref=f2e49] [cursor=pointer]:
+          - /url: "#/rotate-pdf"
+          - strong [ref=f2e54]: Rotate PDF
+          - generic [ref=f2e55]: Rotate all pages or just the ones that are sideways.
+        - link "Crop PDF Trim the margins off every page." [ref=f2e56] [cursor=pointer]:
+          - /url: "#/crop-pdf"
+          - strong [ref=f2e61]: Crop PDF
+          - generic [ref=f2e62]: Trim the margins off every page.
+        - link "PDF to JPG / PNG Save each page as a JPG or PNG image." [ref=f2e63] [cursor=pointer]:
+          - /url: "#/pdf-to-image"
+          - strong [ref=f2e70]: PDF to JPG / PNG
+          - generic [ref=f2e71]: Save each page as a JPG or PNG image.
+        - link "Image to PDF Turn JPG, PNG or WebP images into a single PDF." [ref=f2e72] [cursor=pointer]:
+          - /url: "#/image-to-pdf"
+          - strong [ref=f2e79]: Image to PDF
+          - generic [ref=f2e80]: Turn JPG, PNG or WebP images into a single PDF.
+  - iframe [ref=f2e81]:
+    - button "Powered by Netlify — build your own site" [ref=f3e3] [cursor=pointer]:
+      - generic [ref=f3e13]: Powered by Netlify
