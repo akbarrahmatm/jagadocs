@@ -24,12 +24,12 @@ export const FileList: React.FC<FileListProps> = ({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between px-1">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-          Queue ({files.length})
+        <span className="text-[11px] font-bold uppercase tracking-wider text-[#2B2B2B]/70 flex items-center gap-1.5">
+          <span className="w-2 h-2 rounded-full bg-[#7CB342] animate-dot-pulse" />
+          Document Queue ({files.length})
         </span>
-        <span className="text-[11px] text-slate-400 font-medium">
-          Select to preview
+        <span className="text-[11px] text-[#2B2B2B]/60 font-medium">
+          Click thumbnail to preview
         </span>
       </div>
 
@@ -42,10 +42,10 @@ export const FileList: React.FC<FileListProps> = ({
             <div
               key={fileItem.id}
               onClick={() => onSelectFile(fileItem.id)}
-              className={`group relative flex-shrink-0 w-36 rounded-2xl p-2.5 transition-all duration-300 cursor-pointer select-none ${
+              className={`group relative flex-shrink-0 w-36 rounded-ghibli-sm p-2.5 transition-all duration-200 cursor-pointer select-none border ${
                 isActive
-                  ? 'bg-gradient-to-b from-indigo-900/40 to-slate-900/80 border-indigo-500/80 shadow-[0_10px_30px_rgba(99,102,241,0.25)] ring-2 ring-indigo-500/40 -translate-y-1'
-                  : 'glass-card hover:border-white/20 hover:bg-slate-800/60 hover:-translate-y-0.5'
+                  ? 'bg-white border-[#7CB342] shadow-[0_4px_16px_rgba(124,179,66,0.18)] ring-2 ring-[#7CB342]/30 -translate-y-0.5'
+                  : 'bg-white/80 border-[#2B2B2B]/10 hover:border-[#2B2B2B]/25 hover:bg-white hover:-translate-y-0.5 shadow-sm'
               }`}
             >
               {/* Delete button */}
@@ -55,14 +55,14 @@ export const FileList: React.FC<FileListProps> = ({
                   e.stopPropagation();
                   onRemoveFile(fileItem.id);
                 }}
-                className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-slate-800 hover:bg-rose-600 text-slate-400 hover:text-white flex items-center justify-center opacity-80 group-hover:opacity-100 transition-all shadow-md cursor-pointer z-20 border border-white/10"
+                className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-white hover:bg-[#FFEBEE] text-[#2B2B2B]/60 hover:text-[#C62828] flex items-center justify-center opacity-80 group-hover:opacity-100 transition-all shadow-sm cursor-pointer z-20 border border-[#2B2B2B]/15"
                 title="Remove file"
               >
                 <X className="w-3 h-3" />
               </button>
 
-              {/* Preview Thumbnail with Specular Border */}
-              <div className="w-full h-22 rounded-xl overflow-hidden bg-slate-950 flex items-center justify-center relative mb-2 border border-white/10 shadow-inner">
+              {/* Preview Thumbnail */}
+              <div className="w-full h-20 rounded-ghibli-sm overflow-hidden bg-[#FAF8F2] flex items-center justify-center relative mb-2 border border-[#2B2B2B]/10">
                 {fileItem.previewUrl ? (
                   <img
                     src={fileItem.previewUrl}
@@ -70,19 +70,23 @@ export const FileList: React.FC<FileListProps> = ({
                     className="w-full h-full object-contain"
                   />
                 ) : (
-                  <div className="flex items-center justify-center text-slate-500">
-                    {isPdf ? <FileText className="w-8 h-8 text-rose-400" /> : <ImageIcon className="w-8 h-8 text-indigo-400" />}
+                  <div className="flex items-center justify-center text-[#2B2B2B]/40">
+                    {isPdf ? (
+                      <FileText className="w-7 h-7 text-[#7CB342]" />
+                    ) : (
+                      <ImageIcon className="w-7 h-7 text-[#4FC3F7]" />
+                    )}
                   </div>
                 )}
 
                 {/* Badge for PDF or image type */}
-                <div className="absolute bottom-1.5 right-1.5">
+                <div className="absolute bottom-1 right-1">
                   {isPdf ? (
-                    <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-md bg-rose-600/90 text-white shadow-md backdrop-blur-sm">
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-[#7CB342] text-white shadow-xs">
                       PDF ({fileItem.pdfNumPages || 1}p)
                     </span>
                   ) : (
-                    <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded-md bg-slate-900/90 text-indigo-300 border border-white/10 shadow-md">
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-[#212635] text-white shadow-xs">
                       IMG
                     </span>
                   )}
@@ -92,21 +96,19 @@ export const FileList: React.FC<FileListProps> = ({
               {/* File Title and Info */}
               <div className="px-0.5">
                 <p
-                  className={`text-[11px] font-semibold truncate m-0 ${
-                    isActive ? 'text-indigo-300' : 'text-slate-200 group-hover:text-white'
+                  className={`text-[11px] font-bold truncate m-0 ${
+                    isActive ? 'text-[#2E7D32]' : 'text-[#2B2B2B]'
                   }`}
                   title={fileItem.name}
                 >
                   {fileItem.name}
                 </p>
-                <p className="text-[10px] text-slate-400 m-0 mt-0.5 flex items-center justify-between font-mono">
+                <div className="flex items-center justify-between text-[10px] text-[#2B2B2B]/60 mt-0.5">
                   <span>{formatFileSize(fileItem.size)}</span>
-                  {fileItem.originalWidth > 0 && (
-                    <span className="text-slate-400">
-                      {fileItem.originalWidth}×{fileItem.originalHeight}
-                    </span>
-                  )}
-                </p>
+                  <span>
+                    {fileItem.originalWidth}x{fileItem.originalHeight}
+                  </span>
+                </div>
               </div>
             </div>
           );

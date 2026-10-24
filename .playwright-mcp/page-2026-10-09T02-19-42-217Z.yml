@@ -1,0 +1,38 @@
+- generic [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - generic [ref=f1e5]:
+      - generic [ref=f1e13] [cursor=pointer]:
+        - generic [ref=f1e14]:
+          - heading "JagaDocs" [level=1] [ref=f1e15]
+          - generic [ref=f1e16]: PDF & Photo
+        - paragraph [ref=f1e17]: Secure watermark studio for photos & multi-page PDFs
+      - generic [ref=f1e18]: 100% Client-Side • Local Processing
+      - generic [ref=f1e23]:
+        - button "Presets" [ref=f1e25] [cursor=pointer]
+        - generic [ref=f1e30]:
+          - button "Try Photo" [ref=f1e31] [cursor=pointer]
+          - button "Try PDF" [ref=f1e37] [cursor=pointer]
+  - main [ref=f1e42]:
+    - generic [ref=f1e43]:
+      - generic [ref=f1e45]:
+        - generic [ref=f1e55]:
+          - heading "Drop your Photos or Multi-Page PDFs" [level=2] [ref=f1e56]
+          - paragraph [ref=f1e57]: Batch watermark hundreds of photos or entire PDF documents in seconds. 100% private, executed locally in browser memory.
+        - generic [ref=f1e58]:
+          - button "Select Files from Device" [ref=f1e59] [cursor=pointer]
+          - button "Sample Photo" [ref=f1e67] [cursor=pointer]
+          - button "Sample PDF" [ref=f1e73] [cursor=pointer]
+        - generic [ref=f1e78]:
+          - generic [ref=f1e79]: PNG, JPG, WEBP, SVG
+          - generic [ref=f1e84]: Multi-Page PDF Vector
+          - generic [ref=f1e89]: ⚡ Instant WASM Engine
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]:
+          - heading "Vector PDF Engine" [level=4] [ref=f1e96]
+          - paragraph [ref=f1e97]: Embed scalable vector text and transparent stamps across all pages with zero raster degradation.
+        - generic [ref=f1e98]:
+          - heading "Batch Multi-Core Export" [level=4] [ref=f1e102]
+          - paragraph [ref=f1e103]: Watermark hundreds of high-res photos in parallel and download packaged as a instant ZIP archive.
+        - generic [ref=f1e104]:
+          - heading "Total Privacy & Security" [level=4] [ref=f1e108]
+          - paragraph [ref=f1e109]: All rendering executes 100% inside your local browser memory. Files are never transmitted over the internet.

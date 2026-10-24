@@ -1,0 +1,156 @@
+- generic [ref=f1e4]:
+  - banner [ref=f1e289]:
+    - generic [ref=f1e290]:
+      - generic [ref=f1e291]:
+        - button "Feature Map" [ref=f1e292]
+        - generic [ref=f1e302] [cursor=pointer]:
+          - generic [ref=f1e303]: JagaDocs Studio
+          - generic [ref=f1e304]: 1 File
+      - generic [ref=f1e305]: Local In-Memory Browser Execution • 100% Private
+      - generic [ref=f1e310]:
+        - button "Presets" [ref=f1e312] [cursor=pointer]
+        - button "+ PDF Sample" [ref=f1e315] [cursor=pointer]
+        - button "+ Photo Sample" [ref=f1e320] [cursor=pointer]
+        - button "Clear All" [ref=f1e326] [cursor=pointer]
+  - main [ref=f1e28]:
+    - generic [ref=f1e332]:
+      - generic [ref=f1e333]: Add Files
+      - generic [ref=f1e340]:
+        - generic [ref=f1e341]:
+          - generic [ref=f1e342]: Document Queue (1)
+          - generic [ref=f1e344]: Click thumbnail to preview
+        - generic [ref=f1e346] [cursor=pointer]:
+          - button "Remove file" [ref=f1e347]
+          - generic [ref=f1e351]:
+            - img "annual_financial_report_2026.pdf" [ref=f1e352]
+            - generic [ref=f1e353]: PDF (3p)
+          - generic [ref=f1e355]:
+            - paragraph [ref=f1e356]: annual_financial_report_2026.pdf
+            - generic [ref=f1e357]:
+              - generic [ref=f1e358]: 2.3 KB
+              - generic [ref=f1e359]: 893x1263
+    - generic [ref=f1e360]:
+      - generic [ref=f1e362]:
+        - generic [ref=f1e363]:
+          - generic [ref=f1e364]:
+            - generic [ref=f1e365]:
+              - button "Watermark" [ref=f1e366] [cursor=pointer]
+              - button "Crop & Trim" [ref=f1e372] [cursor=pointer]
+            - generic [ref=f1e377]:
+              - button "Previous page" [disabled] [ref=f1e378] [cursor=pointer]
+              - generic [ref=f1e381]: 1/3
+              - button "Next page" [ref=f1e385] [cursor=pointer]
+          - generic [ref=f1e388]:
+            - generic [ref=f1e582]:
+              - button "Guides" [ref=f1e583] [cursor=pointer]
+              - button "Cropped" [ref=f1e584] [cursor=pointer]
+            - button "Auto Trim" [ref=f1e585] [cursor=pointer]
+            - generic [ref=f1e394]:
+              - button "Zoom out" [ref=f1e395] [cursor=pointer]
+              - button "100%" [ref=f1e399] [cursor=pointer]
+              - button "Zoom in" [ref=f1e400] [cursor=pointer]
+        - generic "Drag to reposition crop area" [ref=f1e591]: 1190 × 1684 px
+        - generic [ref=f1e410]:
+          - generic [ref=f1e411]: Drag frame handles on page edges to trim margins
+          - generic [ref=f1e414]: 420 × 594 mm (1190 × 1684 pt) • Page 1/3
+      - generic [ref=f1e417]:
+        - generic [ref=f1e418]:
+          - button "Watermark Studio" [ref=f1e419] [cursor=pointer]
+          - button "Crop & Margin" [active] [ref=f1e425] [cursor=pointer]
+        - generic [ref=f1e607]:
+          - generic [ref=f1e608]:
+            - generic [ref=f1e614]:
+              - generic [ref=f1e615]: Document Edge Crop & Margin Trim
+              - text: Disabled / Full page
+            - checkbox [ref=f1e617]
+          - generic [ref=f1e619]:
+            - generic [ref=f1e620]: Quick Margin Presets
+            - generic [ref=f1e621]:
+              - button "Scanner Edge Clean (3 mm) Scanned Docs Trims small dark border lines and artifacts from scanned PDFs" [ref=f1e622] [cursor=pointer]:
+                - generic [ref=f1e623]:
+                  - generic [ref=f1e624]: Scanner Edge Clean (3 mm)
+                  - generic [ref=f1e625]: Scanned Docs
+                - generic [ref=f1e626]: Trims small dark border lines and artifacts from scanned PDFs
+              - button "Standard Margins (10 mm) Uniform Clean uniform 10mm border trim around all sides" [ref=f1e627] [cursor=pointer]:
+                - generic [ref=f1e628]:
+                  - generic [ref=f1e629]: Standard Margins (10 mm)
+                  - generic [ref=f1e630]: Uniform
+                - generic [ref=f1e631]: Clean uniform 10mm border trim around all sides
+              - button "Header & Footer Trim (15 mm) Headers/Footers Removes unwanted headers, footers, page numbers, or URLs" [ref=f1e632] [cursor=pointer]:
+                - generic [ref=f1e633]:
+                  - generic [ref=f1e634]: Header & Footer Trim (15 mm)
+                  - generic [ref=f1e635]: Headers/Footers
+                - generic [ref=f1e636]: Removes unwanted headers, footers, page numbers, or URLs
+              - button "Hole Punch / Binding Trim (15 mm Left) Binding Trims left margin for punched holes, staples or binder shadows" [ref=f1e637] [cursor=pointer]:
+                - generic [ref=f1e638]:
+                  - generic [ref=f1e639]: Hole Punch / Binding Trim (15 mm Left)
+                  - generic [ref=f1e640]: Binding
+                - generic [ref=f1e641]: Trims left margin for punched holes, staples or binder shadows
+              - button "5% Outer Margin Trim Proportional Proportional 5% trim on all 4 sides" [ref=f1e642] [cursor=pointer]:
+                - generic [ref=f1e643]:
+                  - generic [ref=f1e644]: 5% Outer Margin Trim
+                  - generic [ref=f1e645]: Proportional
+                - generic [ref=f1e646]: Proportional 5% trim on all 4 sides
+          - generic [ref=f1e647]:
+            - generic [ref=f1e648]:
+              - generic [ref=f1e649]: Unit of Measure
+              - generic [ref=f1e650]:
+                - button "%" [ref=f1e651] [cursor=pointer]
+                - button "mm" [ref=f1e652] [cursor=pointer]
+                - button "pt" [ref=f1e653] [cursor=pointer]
+                - button "px" [ref=f1e654] [cursor=pointer]
+            - generic [ref=f1e655]:
+              - generic [ref=f1e656]: Margin Ratio
+              - button "Independent" [ref=f1e657] [cursor=pointer]
+          - generic [ref=f1e662]:
+            - generic [ref=f1e663]:
+              - generic [ref=f1e664]:
+                - generic [ref=f1e665]: Top Edge Trim
+                - generic [ref=f1e669]:
+                  - spinbutton [ref=f1e670]: "0"
+                  - generic [ref=f1e671]: "%"
+              - slider [ref=f1e672] [cursor=pointer]: "0"
+            - generic [ref=f1e673]:
+              - generic [ref=f1e674]:
+                - generic [ref=f1e675]: Bottom Edge Trim
+                - generic [ref=f1e679]:
+                  - spinbutton [ref=f1e680]: "0"
+                  - generic [ref=f1e681]: "%"
+              - slider [ref=f1e682] [cursor=pointer]: "0"
+            - generic [ref=f1e683]:
+              - generic [ref=f1e684]:
+                - generic [ref=f1e685]: Left Edge Trim
+                - generic [ref=f1e689]:
+                  - spinbutton [ref=f1e690]: "0"
+                  - generic [ref=f1e691]: "%"
+              - slider [ref=f1e692] [cursor=pointer]: "0"
+            - generic [ref=f1e693]:
+              - generic [ref=f1e694]:
+                - generic [ref=f1e695]: Right Edge Trim
+                - generic [ref=f1e699]:
+                  - spinbutton [ref=f1e700]: "0"
+                  - generic [ref=f1e701]: "%"
+              - slider [ref=f1e702] [cursor=pointer]: "0"
+          - generic [ref=f1e703]:
+            - generic [ref=f1e704]: Crop Application Scope
+            - generic [ref=f1e705]:
+              - button "All PDF Pages" [ref=f1e706] [cursor=pointer]
+              - button "Current Page Only" [ref=f1e707] [cursor=pointer]
+          - generic [ref=f1e708]:
+            - generic [ref=f1e709]:
+              - generic [ref=f1e710]: "Original Dimensions:"
+              - generic [ref=f1e711]: 315 × 446 mm (893 × 1263 pt)
+            - generic [ref=f1e712]: No margins trimmed (Full page output)
+  - generic [ref=f1e560]:
+    - generic [ref=f1e561]:
+      - generic [ref=f1e562]:
+        - generic [ref=f1e563]: "Export Format:"
+        - combobox [ref=f1e564] [cursor=pointer]:
+          - option "Original (Auto)" [selected]
+          - option "PNG (Lossless)"
+          - option "JPEG (Compressed)"
+          - option "WebP (Modern)"
+      - button "File Naming" [ref=f1e565] [cursor=pointer]
+    - generic [ref=f1e570]:
+      - button "Download Active PDF" [ref=f1e571] [cursor=pointer]
+      - button "Download All (1) as ZIP" [ref=f1e576] [cursor=pointer]

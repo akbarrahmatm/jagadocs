@@ -6,6 +6,9 @@ import type {
   WatermarkPreset,
 } from './types/watermark';
 import { Header } from './components/Header';
+import { NarrativeHeader } from './components/NarrativeHeader';
+import { NarrativeHero } from './components/NarrativeHero';
+import { NarrativeMapStations } from './components/NarrativeMapStations';
 import { FileUploader } from './components/FileUploader';
 import { FileList } from './components/FileList';
 import { WatermarkControls } from './components/WatermarkControls';
@@ -14,34 +17,39 @@ import { ExportSection } from './components/ExportSection';
 import { exportBatchFiles, exportSingleFile, type ExportProgress } from './utils/exportManager';
 import { loadPdfInfo } from './utils/pdfPreview';
 import { createSamplePhoto, createSamplePdf } from './utils/sampleLoader';
-import { CheckCircle2, AlertCircle, Shield, Cpu, Zap } from 'lucide-react';
+import { DEFAULT_CROP_CONFIG } from './utils/cropUtils';
+import type { CropConfig } from './types/watermark';
+import type { FeatureId } from './modules/featureRegistry';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 
 const DEFAULT_CONFIG: WatermarkConfig = {
+  watermarkEnabled: true,
   type: 'text',
   positionMode: 'grid',
   gridPosition: 'center',
   customPosition: { xPercent: 50, yPercent: 50 },
   tileSettings: { gapX: 180, gapY: 120, diagonalOffset: true },
+  crop: DEFAULT_CROP_CONFIG,
   text: {
     text: 'CONFIDENTIAL',
     fontFamily: 'Helvetica, Arial, sans-serif',
     fontSize: 48,
     fontSizeMode: 'percent',
     fontSizePercent: 10,
-    color: '#dc2626',
-    opacity: 0.45,
+    color: '#7cb342',
+    opacity: 0.55,
     rotation: -30,
     bold: true,
     italic: false,
     underline: false,
     stroke: true,
-    strokeColor: '#991b1b',
+    strokeColor: '#2b2b2b',
     strokeWidth: 2,
     shadow: true,
-    shadowColor: '#000000',
-    shadowBlur: 6,
+    shadowColor: '#FAF8F2',
+    shadowBlur: 4,
     background: false,
-    bgColor: '#fee2e2',
+    bgColor: '#FAF8F2',
     bgOpacity: 0.5,
     bgPadding: 10,
     bgRadius: 8,
@@ -72,6 +80,9 @@ export function App() {
   const [config, setConfig] = useState<WatermarkConfig>(DEFAULT_CONFIG);
   const [exportSettings, setExportSettings] = useState<ExportSettings>(DEFAULT_EXPORT_SETTINGS);
   const [logoImage, setLogoImage] = useState<HTMLImageElement | null>(null);
+  const [activeStudioTab, setActiveStudioTab] = useState<'watermark' | 'crop'>('watermark');
+  const [activeFeatureId, setActiveFeatureId] = useState<FeatureId>('pdf-watermark');
+  const [currentView, setCurrentView] = useState<'map' | 'studio'>('map');
 
   // Export State
   const [isExporting, setIsExporting] = useState(false);
@@ -115,7 +126,7 @@ export function App() {
   }, [config.image.imageUrl]);
 
   // Handle uploaded files
-  const handleFilesSelected = async (newRawFiles: File[]) => {
+  const handleFilesSelected = async (newRawFiles: File[], targetFeatureId?: FeatureId) => {
     const loadedList: UploadedFile[] = [];
 
     for (const file of newRawFiles) {
@@ -125,7 +136,6 @@ export function App() {
       if (isPdf) {
         try {
           const buffer = await file.arrayBuffer();
-          // Pass sliced copy to prevent worker detachment
           const info = await loadPdfInfo(buffer.slice(0));
           loadedList.push({
             id,
@@ -176,21 +186,63 @@ export function App() {
       if (!activeFileId) {
         setActiveFileId(loadedList[0].id);
       }
-      showToast(`Added ${loadedList.length} file(s) successfully!`);
+      if (targetFeatureId) {
+        setActiveFeatureId(targetFeatureId);
+        if (targetFeatureId === 'doc-crop') {
+          setActiveStudioTab('crop');
+        } else {
+          setActiveStudioTab('watermark');
+        }
+      }
+      setCurrentView('studio');
+      showToast(`Loaded ${loadedList.length} file(s) successfully!`);
     }
   };
 
-  // Load sample file
-  const handleLoadSample = async (type: 'photo' | 'pdf') => {
+  // Dedicated Sample Loader for Specific Feature Module
+  const handleLoadFeatureSample = async (featureId: FeatureId, type: 'photo' | 'pdf') => {
     try {
       const sampleItem = type === 'photo' ? await createSamplePhoto() : await createSamplePdf();
       setFiles((prev) => [sampleItem, ...prev]);
       setActiveFileId(sampleItem.id);
-      showToast(`Sample ${type === 'photo' ? 'Photo' : 'PDF Document'} loaded!`);
+      setActiveFeatureId(featureId);
+
+      if (featureId === 'doc-crop') {
+        setActiveStudioTab('crop');
+        setConfig((prev) => ({
+          ...prev,
+          crop: {
+            ...prev.crop,
+            enabled: true,
+            top: 10,
+            bottom: 10,
+            left: 10,
+            right: 10,
+            unit: 'mm',
+          },
+        }));
+      } else {
+        setActiveStudioTab('watermark');
+      }
+
+      setCurrentView('studio');
+      const stationName =
+        featureId === 'pdf-watermark'
+          ? 'PDF Document Pavilion'
+          : featureId === 'image-watermark'
+          ? 'Photo & Imagery Garden'
+          : 'Margin & Crop Atelier';
+      showToast(`Sample for ${stationName} ready to explore!`);
     } catch (err) {
       console.error('Failed to load sample:', err);
       showToast('Could not load sample file', 'error');
     }
+  };
+
+  // Load generic sample
+  const handleLoadSample = async (type: 'photo' | 'pdf') => {
+    const featureId: FeatureId = type === 'pdf' ? 'pdf-watermark' : 'image-watermark';
+    await handleLoadFeatureSample(featureId, type);
   };
 
   // Remove File
@@ -200,6 +252,9 @@ export function App() {
       if (activeFileId === id) {
         setActiveFileId(next.length > 0 ? next[0].id : null);
       }
+      if (next.length === 0) {
+        setCurrentView('map');
+      }
       return next;
     });
   };
@@ -208,7 +263,8 @@ export function App() {
   const handleClearFiles = () => {
     setFiles([]);
     setActiveFileId(null);
-    showToast('Cleared all files');
+    setCurrentView('map');
+    showToast('All files cleared');
   };
 
   // Preset Application
@@ -228,8 +284,20 @@ export function App() {
         ...prev.tileSettings,
         ...(preset.config.tileSettings || {}),
       },
+      crop: {
+        ...prev.crop,
+        ...(preset.config.crop || {}),
+      },
     }));
     showToast(`Applied preset: ${preset.name}`);
+  };
+
+  // Crop Config Handler
+  const handleUpdateCropConfig = (newCrop: CropConfig) => {
+    setConfig((prev) => ({
+      ...prev,
+      crop: newCrop,
+    }));
   };
 
   // Handle Logo Upload
@@ -249,7 +317,7 @@ export function App() {
           imageHeight: img.naturalHeight,
         },
       }));
-      showToast(`Logo "${file.name}" uploaded!`);
+      showToast(`Logo "${file.name}" uploaded successfully!`);
     };
     img.src = url;
   };
@@ -268,7 +336,7 @@ export function App() {
     }));
   };
 
-  // Handle PDF Page Change for active file
+  // Handle PDF Page Change
   const handlePageChange = (newPage: number) => {
     if (!activeFile || activeFile.type !== 'pdf') return;
     setFiles((prev) =>
@@ -309,7 +377,7 @@ export function App() {
       setExportProgress({
         current: 0,
         total: files.length,
-        currentFileName: 'Preparing batch...',
+        currentFileName: 'Preparing batch files...',
         percentage: 0,
       });
 
@@ -317,11 +385,11 @@ export function App() {
         setExportProgress(progress);
       });
 
-      showToast(`Batch ZIP of ${files.length} files downloaded!`);
+      showToast(`ZIP package of ${files.length} file(s) downloaded!`);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Unknown error';
       console.error('Export batch failed:', err);
-      showToast(`Batch export error: ${msg}`, 'error');
+      showToast(`Batch export failed: ${msg}`, 'error');
     } finally {
       setIsExporting(false);
       setExportProgress(null);
@@ -329,90 +397,79 @@ export function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#050714] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white overflow-hidden bg-spatial-grid">
-      {/* Floating Spatial Background Nebulas / Glowing Orbs */}
-      <div className="fixed top-[-10%] left-[-10%] w-[600px] h-[600px] bg-indigo-600/15 rounded-full blur-[140px] pointer-events-none animate-orb-1" />
-      <div className="fixed bottom-[-15%] right-[-10%] w-[650px] h-[650px] bg-purple-600/15 rounded-full blur-[160px] pointer-events-none animate-orb-2" />
-      <div className="fixed top-[40%] left-[50%] -translate-x-1/2 w-[500px] h-[500px] bg-pink-600/10 rounded-full blur-[180px] pointer-events-none animate-pulse-glow" />
-
-      {/* Top Header */}
-      <Header
-        onApplyPreset={handleApplyPreset}
-        onClearFiles={handleClearFiles}
-        onLoadSample={handleLoadSample}
-        fileCount={files.length}
-      />
-
-      {/* Notification Toast */}
+    <div className="relative min-h-[100dvh] bg-[#FAF8F2] text-[#2B2B2B] flex flex-col font-['Quicksand'] selection:bg-[#7CB342]/30 selection:text-[#212635] bg-ghibli-parchment">
+      {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-18 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] glass-panel border border-white/20 text-xs font-bold text-white animate-in slide-in-from-top-3 duration-300">
+        <div className="fixed top-18 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-ghibli-sm shadow-md bg-white border border-[#2B2B2B]/15 text-xs font-bold text-[#2B2B2B] animate-in slide-in-from-top-3 duration-300">
           {toastMessage.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-[#7CB342] shrink-0" />
           ) : (
-            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+            <AlertCircle className="w-4 h-4 text-[#C62828] shrink-0" />
           )}
           <span>{toastMessage.text}</span>
         </div>
       )}
 
-      {/* Main Workspace */}
-      <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 flex flex-col gap-6">
-        {files.length === 0 ? (
-          /* Empty State: Antigravity Hero & Feature Grid */
-          <div className="flex-1 flex flex-col items-center justify-center py-2 md:py-4 space-y-4 md:space-y-6 w-full my-auto">
-            <FileUploader
-              onFilesSelected={handleFilesSelected}
-              onLoadSample={handleLoadSample}
+      {/* VIEW MODE 1: NARRATIVE MAP HOME */}
+      {currentView === 'map' || files.length === 0 ? (
+        <div className="flex-1 flex flex-col">
+          <NarrativeHeader
+            onNavigateHome={() => setCurrentView('map')}
+            onOpenStudio={() => {
+              if (files.length > 0) setCurrentView('studio');
+            }}
+            isStudioActive={files.length > 0 && currentView === 'studio'}
+          />
+
+          <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <NarrativeHero
+              onQuickStart={(featureId) => {
+                if (featureId === 'pdf-watermark') {
+                  handleLoadFeatureSample('pdf-watermark', 'pdf');
+                } else if (featureId === 'image-watermark') {
+                  handleLoadFeatureSample('image-watermark', 'photo');
+                } else {
+                  handleLoadFeatureSample('doc-crop', 'pdf');
+                }
+              }}
             />
 
-            {/* Spatial Feature Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 w-full max-w-4xl">
-              <div className="glass-panel p-4 md:p-4.5 rounded-2xl text-left border border-white/10 hover:border-indigo-500/40 hover:-translate-y-1 transition-all duration-300 group shadow-md">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500/20 to-purple-500/20 border border-white/15 text-indigo-400 flex items-center justify-center font-bold text-base mb-2.5 group-hover:scale-110 transition-transform shadow-inner">
-                  <Cpu className="w-4.5 h-4.5 text-indigo-400" />
-                </div>
-                <h4 className="text-xs sm:text-sm font-bold text-white tracking-tight m-0">
-                  Vector PDF Engine
-                </h4>
-                <p className="text-[11px] sm:text-xs text-slate-400 mt-1 m-0 leading-relaxed">
-                  Embed scalable vector text and transparent stamps across all pages with zero raster degradation.
-                </p>
-              </div>
+            <NarrativeMapStations
+              onLoadFeatureSample={(featureId, type) => handleLoadFeatureSample(featureId, type)}
+              onFilesSelectedForFeature={(selectedFiles, featureId) =>
+                handleFilesSelected(selectedFiles, featureId)
+              }
+            />
+          </main>
 
-              <div className="glass-panel p-4 md:p-4.5 rounded-2xl text-left border border-white/10 hover:border-purple-500/40 hover:-translate-y-1 transition-all duration-300 group shadow-md">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-500/20 to-pink-500/20 border border-white/15 text-purple-400 flex items-center justify-center font-bold text-base mb-2.5 group-hover:scale-110 transition-transform shadow-inner">
-                  <Zap className="w-4.5 h-4.5 text-purple-400" />
-                </div>
-                <h4 className="text-xs sm:text-sm font-bold text-white tracking-tight m-0">
-                  Batch Multi-Core Export
-                </h4>
-                <p className="text-[11px] sm:text-xs text-slate-400 mt-1 m-0 leading-relaxed">
-                  Watermark hundreds of high-res photos in parallel and download packaged as a instant ZIP archive.
-                </p>
-              </div>
+          <footer className="mt-16 py-8 border-t border-[#2B2B2B]/10 text-center text-xs text-[#2B2B2B]/60 space-y-1">
+            <p className="m-0 font-medium">
+              JagaDocs — Narrative Map Document &amp; Photo Protection Studio.
+            </p>
+            <p className="m-0">
+              100% processed in local browser memory. No server uploads, no telemetry tracking.
+            </p>
+          </footer>
+        </div>
+      ) : (
+        /* VIEW MODE 2: ACTIVE STUDIO WORKSPACE */
+        <div className="flex-1 flex flex-col">
+          <Header
+            onApplyPreset={handleApplyPreset}
+            onClearFiles={handleClearFiles}
+            onLoadSample={handleLoadSample}
+            fileCount={files.length}
+            onNavigateHome={() => setCurrentView('map')}
+            activeFeatureId={activeFeatureId}
+          />
 
-              <div className="glass-panel p-4 md:p-4.5 rounded-2xl text-left border border-white/10 hover:border-pink-500/40 hover:-translate-y-1 transition-all duration-300 group shadow-md">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-500/20 to-rose-500/20 border border-white/15 text-pink-400 flex items-center justify-center font-bold text-base mb-2.5 group-hover:scale-110 transition-transform shadow-inner">
-                  <Shield className="w-4.5 h-4.5 text-pink-400" />
-                </div>
-                <h4 className="text-xs sm:text-sm font-bold text-white tracking-tight m-0">
-                  Total Privacy &amp; Security
-                </h4>
-                <p className="text-[11px] sm:text-xs text-slate-400 mt-1 m-0 leading-relaxed">
-                  All rendering executes 100% inside your local browser memory. Files are never transmitted over the internet.
-                </p>
-              </div>
-            </div>
-          </div>
-        ) : (
-          /* Active Editor Layout */
-          <div className="flex flex-col gap-6 flex-1">
-            {/* Horizontal Files Carousel */}
-            <div className="glass-panel rounded-3xl p-3.5 shadow-xl">
+          <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 flex flex-col gap-5">
+            {/* Horizontal Files Carousel & Quick Add */}
+            <div className="ghibli-card p-3 shadow-xs">
               <div className="flex items-center gap-3">
                 <div className="w-36 shrink-0">
                   <FileUploader
-                    onFilesSelected={handleFilesSelected}
+                    onFilesSelected={(newFiles) => handleFilesSelected(newFiles, activeFeatureId)}
                     onLoadSample={handleLoadSample}
                     isCompact
                   />
@@ -429,15 +486,18 @@ export function App() {
             </div>
 
             {/* Split Screen: Preview Canvas & Controls */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start flex-1">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start flex-1">
               {/* Preview Canvas Area */}
-              <div className="lg:col-span-7 xl:col-span-8 flex flex-col h-[520px] lg:h-[720px] sticky top-20">
+              <div className="lg:col-span-7 xl:col-span-8 flex flex-col h-[520px] lg:h-[720px] sticky top-18">
                 <PreviewCanvas
                   activeFile={activeFile}
                   config={config}
                   logoImage={logoImage}
                   onUpdateCustomPosition={handleUpdateCustomPosition}
+                  onUpdateCropConfig={handleUpdateCropConfig}
                   onPageChange={handlePageChange}
+                  activeStudioTab={activeStudioTab}
+                  onSelectStudioTab={setActiveStudioTab}
                 />
               </div>
 
@@ -451,24 +511,34 @@ export function App() {
                   onLogoUpload={handleLogoUpload}
                   onRemoveLogo={handleRemoveLogo}
                   hasPdfInFiles={hasPdfInFiles}
+                  activeStudioTab={activeStudioTab}
+                  onSelectStudioTab={setActiveStudioTab}
+                  activeFile={activeFile}
                 />
               </div>
             </div>
-          </div>
-        )}
-      </main>
+          </main>
 
-      {/* Bottom Sticky Export Bar */}
-      <ExportSection
-        files={files}
-        activeFile={activeFile}
-        exportSettings={exportSettings}
-        onChangeExportSettings={setExportSettings}
-        onExportSingle={handleExportSingle}
-        onExportBatch={handleExportBatch}
-        isExporting={isExporting}
-        exportProgress={exportProgress}
-      />
+          {/* Bottom Sticky Export Bar */}
+          <ExportSection
+            files={files}
+            activeFile={activeFile}
+            exportSettings={exportSettings}
+            onChangeExportSettings={setExportSettings}
+            onExportSingle={handleExportSingle}
+            onExportBatch={handleExportBatch}
+            isExporting={isExporting}
+            exportProgress={exportProgress}
+            isCropActive={
+              !!config.crop?.enabled &&
+              (config.crop.top > 0 ||
+                config.crop.bottom > 0 ||
+                config.crop.left > 0 ||
+                config.crop.right > 0)
+            }
+          />
+        </div>
+      )}
     </div>
   );
 }

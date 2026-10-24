@@ -5,6 +5,7 @@ import type {
   WatermarkConfig,
 } from '../types/watermark';
 import { parseWatermarkTokens, type TokenContext } from './tokenParser';
+import { toPixels } from './cropUtils';
 
 export interface RenderWatermarkOptions {
   canvas: HTMLCanvasElement;
@@ -12,6 +13,7 @@ export interface RenderWatermarkOptions {
   config: WatermarkConfig;
   tokenContext?: TokenContext;
   logoImage?: HTMLImageElement | null;
+  previewMode?: 'cropped' | 'guides';
 }
 
 /**
@@ -212,19 +214,84 @@ function drawSingleImageBlock(
  * Main function to render watermarked image onto a canvas
  */
 export function renderWatermarkOnCanvas(options: RenderWatermarkOptions) {
-  const { canvas, sourceImage, config, tokenContext, logoImage } = options;
+  const {
+    canvas,
+    sourceImage,
+    config,
+    tokenContext,
+    logoImage,
+    previewMode = 'cropped',
+  } = options;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  const width = (sourceImage as HTMLImageElement).naturalWidth || sourceImage.width;
-  const height = (sourceImage as HTMLImageElement).naturalHeight || sourceImage.height;
+  const rawWidth = (sourceImage as HTMLImageElement).naturalWidth || sourceImage.width;
+  const rawHeight = (sourceImage as HTMLImageElement).naturalHeight || sourceImage.height;
 
-  canvas.width = width;
-  canvas.height = height;
+  const isCropActive =
+    !!config.crop?.enabled &&
+    (config.crop.top > 0 ||
+      config.crop.bottom > 0 ||
+      config.crop.left > 0 ||
+      config.crop.right > 0);
 
-  // 1. Draw source image
-  ctx.clearRect(0, 0, width, height);
-  ctx.drawImage(sourceImage, 0, 0, width, height);
+  let cropL = 0;
+  let cropR = 0;
+  let cropT = 0;
+  let cropB = 0;
+  let activeW = rawWidth;
+  let activeH = rawHeight;
+  let shiftX = 0;
+  let shiftY = 0;
+
+  if (isCropActive) {
+    cropL = Math.max(0, Math.round(toPixels(config.crop.left, config.crop.unit, rawWidth)));
+    cropR = Math.max(0, Math.round(toPixels(config.crop.right, config.crop.unit, rawWidth)));
+    cropT = Math.max(0, Math.round(toPixels(config.crop.top, config.crop.unit, rawHeight)));
+    cropB = Math.max(0, Math.round(toPixels(config.crop.bottom, config.crop.unit, rawHeight)));
+
+    activeW = Math.max(10, rawWidth - cropL - cropR);
+    activeH = Math.max(10, rawHeight - cropT - cropB);
+  }
+
+  if (previewMode === 'cropped' && isCropActive) {
+    // Canvas dimensions are clipped to cropped area
+    canvas.width = activeW;
+    canvas.height = activeH;
+    ctx.clearRect(0, 0, activeW, activeH);
+    ctx.drawImage(sourceImage, cropL, cropT, activeW, activeH, 0, 0, activeW, activeH);
+    shiftX = 0;
+    shiftY = 0;
+  } else {
+    // Full image view with crop guides
+    canvas.width = rawWidth;
+    canvas.height = rawHeight;
+    ctx.clearRect(0, 0, rawWidth, rawHeight);
+    ctx.drawImage(sourceImage, 0, 0, rawWidth, rawHeight);
+
+    if (isCropActive) {
+      shiftX = cropL;
+      shiftY = cropT;
+
+      // Draw semi-transparent dark mask over trimmed margins
+      ctx.save();
+      ctx.fillStyle = 'rgba(2, 6, 23, 0.65)';
+      if (cropT > 0) ctx.fillRect(0, 0, rawWidth, cropT);
+      if (cropB > 0) ctx.fillRect(0, rawHeight - cropB, rawWidth, cropB);
+      if (cropL > 0) ctx.fillRect(0, cropT, cropL, rawHeight - cropT - cropB);
+      if (cropR > 0) ctx.fillRect(rawWidth - cropR, cropT, cropR, rawHeight - cropT - cropB);
+
+      // Subtle crop border
+      ctx.strokeStyle = '#6366f1';
+      ctx.lineWidth = Math.max(2, Math.round(rawWidth / 500));
+      ctx.setLineDash([8, 6]);
+      ctx.strokeRect(cropL, cropT, activeW, activeH);
+      ctx.restore();
+    }
+  }
+
+  const isWatermarkEnabled = config.watermarkEnabled !== false && config.type !== 'none';
+  if (!isWatermarkEnabled) return;
 
   // 2. Render Text Watermark
   if (config.type === 'text') {
@@ -232,7 +299,7 @@ export function renderWatermarkOnCanvas(options: RenderWatermarkOptions) {
     if (!rawText.trim()) return;
 
     const lines = rawText.split('\n');
-    const fontSize = calculateFontSize(config.text, width, height);
+    const fontSize = calculateFontSize(config.text, activeW, activeH);
     const lineHeight = fontSize * 1.25;
 
     // Setup font
@@ -248,27 +315,51 @@ export function renderWatermarkOnCanvas(options: RenderWatermarkOptions) {
     ctx.globalAlpha = config.text.opacity;
 
     if (config.positionMode === 'tile') {
-      // Repeating pattern
-      const gapX = Math.max(80, (config.tileSettings.gapX * width) / 1000) + bounds.width;
-      const gapY = Math.max(60, (config.tileSettings.gapY * height) / 1000) + bounds.height;
+      // Repeating pattern inside active area
+      const gapX = Math.max(80, (config.tileSettings.gapX * activeW) / 1000) + bounds.width;
+      const gapY = Math.max(60, (config.tileSettings.gapY * activeH) / 1000) + bounds.height;
       const diagOffset = config.tileSettings.diagonalOffset ? gapX / 2 : 0;
 
       let row = 0;
-      for (let y = -bounds.height; y <= height + bounds.height + gapY; y += gapY) {
-        const xOffset = (row % 2 === 1) ? diagOffset : 0;
-        for (let x = -bounds.width; x <= width + bounds.width + gapX; x += gapX) {
-          drawSingleTextBlock(ctx, x + xOffset, y, lines, fontSize, lineHeight, config.text, bounds);
+      for (let y = -bounds.height; y <= activeH + bounds.height + gapY; y += gapY) {
+        const xOffset = row % 2 === 1 ? diagOffset : 0;
+        for (let x = -bounds.width; x <= activeW + bounds.width + gapX; x += gapX) {
+          drawSingleTextBlock(
+            ctx,
+            shiftX + x + xOffset,
+            shiftY + y,
+            lines,
+            fontSize,
+            lineHeight,
+            config.text,
+            bounds
+          );
         }
         row++;
       }
     } else if (config.positionMode === 'custom') {
-      const x = (config.customPosition.xPercent / 100) * width;
-      const y = (config.customPosition.yPercent / 100) * height;
+      const x = shiftX + (config.customPosition.xPercent / 100) * activeW;
+      const y = shiftY + (config.customPosition.yPercent / 100) * activeH;
       drawSingleTextBlock(ctx, x, y, lines, fontSize, lineHeight, config.text, bounds);
     } else {
       // Grid preset
-      const coords = calculateGridCoordinates(config.gridPosition, width, height, bounds.width, bounds.height);
-      drawSingleTextBlock(ctx, coords.x, coords.y, lines, fontSize, lineHeight, config.text, bounds);
+      const coords = calculateGridCoordinates(
+        config.gridPosition,
+        activeW,
+        activeH,
+        bounds.width,
+        bounds.height
+      );
+      drawSingleTextBlock(
+        ctx,
+        shiftX + coords.x,
+        shiftY + coords.y,
+        lines,
+        fontSize,
+        lineHeight,
+        config.text,
+        bounds
+      );
     }
 
     ctx.restore();
@@ -280,8 +371,8 @@ export function renderWatermarkOnCanvas(options: RenderWatermarkOptions) {
     const logoH = logoImage.naturalHeight || logoImage.height;
     if (logoW <= 0 || logoH <= 0) return;
 
-    // Scale calculation relative to source canvas
-    const maxDimension = Math.min(width, height);
+    // Scale calculation relative to active bounds
+    const maxDimension = Math.min(activeW, activeH);
     const targetScale = config.image.scalePercent / 100;
     const baseW = maxDimension * targetScale;
     const aspectRatio = logoW / logoH;
@@ -292,25 +383,47 @@ export function renderWatermarkOnCanvas(options: RenderWatermarkOptions) {
     ctx.globalAlpha = config.image.opacity;
 
     if (config.positionMode === 'tile') {
-      const gapX = Math.max(80, (config.tileSettings.gapX * width) / 1000) + targetW;
-      const gapY = Math.max(60, (config.tileSettings.gapY * height) / 1000) + targetH;
+      const gapX = Math.max(80, (config.tileSettings.gapX * activeW) / 1000) + targetW;
+      const gapY = Math.max(60, (config.tileSettings.gapY * activeH) / 1000) + targetH;
       const diagOffset = config.tileSettings.diagonalOffset ? gapX / 2 : 0;
 
       let row = 0;
-      for (let y = -targetH; y <= height + targetH + gapY; y += gapY) {
-        const xOffset = (row % 2 === 1) ? diagOffset : 0;
-        for (let x = -targetW; x <= width + targetW + gapX; x += gapX) {
-          drawSingleImageBlock(ctx, x + xOffset, y, logoImage, config.image, targetW, targetH);
+      for (let y = -targetH; y <= activeH + targetH + gapY; y += gapY) {
+        const xOffset = row % 2 === 1 ? diagOffset : 0;
+        for (let x = -targetW; x <= activeW + targetW + gapX; x += gapX) {
+          drawSingleImageBlock(
+            ctx,
+            shiftX + x + xOffset,
+            shiftY + y,
+            logoImage,
+            config.image,
+            targetW,
+            targetH
+          );
         }
         row++;
       }
     } else if (config.positionMode === 'custom') {
-      const x = (config.customPosition.xPercent / 100) * width;
-      const y = (config.customPosition.yPercent / 100) * height;
+      const x = shiftX + (config.customPosition.xPercent / 100) * activeW;
+      const y = shiftY + (config.customPosition.yPercent / 100) * activeH;
       drawSingleImageBlock(ctx, x, y, logoImage, config.image, targetW, targetH);
     } else {
-      const coords = calculateGridCoordinates(config.gridPosition, width, height, targetW, targetH);
-      drawSingleImageBlock(ctx, coords.x, coords.y, logoImage, config.image, targetW, targetH);
+      const coords = calculateGridCoordinates(
+        config.gridPosition,
+        activeW,
+        activeH,
+        targetW,
+        targetH
+      );
+      drawSingleImageBlock(
+        ctx,
+        shiftX + coords.x,
+        shiftY + coords.y,
+        logoImage,
+        config.image,
+        targetW,
+        targetH
+      );
     }
 
     ctx.restore();

@@ -1,0 +1,38 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e13] [cursor=pointer]:
+        - generic [ref=e14]:
+          - heading "JagaDocs" [level=1] [ref=e15]
+          - generic [ref=e16]: PDF & Photo
+        - paragraph [ref=e17]: Secure watermark studio for photos & multi-page PDFs
+      - generic [ref=e18]: 100% Client-Side • Local Processing
+      - generic [ref=e23]:
+        - button "Presets" [ref=e25] [cursor=pointer]
+        - generic [ref=e30]:
+          - button "Try Photo" [ref=e31] [cursor=pointer]
+          - button "Try PDF" [ref=e37] [cursor=pointer]
+  - main [ref=e42]:
+    - generic [ref=e43]:
+      - generic [ref=e45]:
+        - generic [ref=e55]:
+          - heading "Drop your Photos or Multi-Page PDFs" [level=2] [ref=e56]
+          - paragraph [ref=e57]: Batch watermark hundreds of photos or entire PDF documents in seconds. 100% private, executed locally in browser memory.
+        - generic [ref=e58]:
+          - button "Select Files from Device" [ref=e59] [cursor=pointer]
+          - button "Sample Photo" [ref=e67] [cursor=pointer]
+          - button "Sample PDF" [active] [ref=e73] [cursor=pointer]
+        - generic [ref=e78]:
+          - generic [ref=e79]: PNG, JPG, WEBP, SVG
+          - generic [ref=e84]: Multi-Page PDF Vector
+          - generic [ref=e89]: ⚡ Instant WASM Engine
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - heading "Vector PDF Engine" [level=4] [ref=e96]
+          - paragraph [ref=e97]: Embed scalable vector text and transparent stamps across all pages with zero raster degradation.
+        - generic [ref=e98]:
+          - heading "Batch Multi-Core Export" [level=4] [ref=e102]
+          - paragraph [ref=e103]: Watermark hundreds of high-res photos in parallel and download packaged as a instant ZIP archive.
+        - generic [ref=e104]:
+          - heading "Total Privacy & Security" [level=4] [ref=e108]
+          - paragraph [ref=e109]: All rendering executes 100% inside your local browser memory. Files are never transmitted over the internet.

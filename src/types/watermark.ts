@@ -1,4 +1,4 @@
-export type WatermarkType = 'text' | 'image';
+export type WatermarkType = 'text' | 'image' | 'none';
 
 export type GridPosition =
   | 'top-left'
@@ -59,7 +59,21 @@ export interface ImageWatermarkConfig {
   rotation: number; // -180 to 180 degrees
 }
 
+export type CropUnit = 'percent' | 'mm' | 'pt' | 'px';
+
+export interface CropConfig {
+  enabled: boolean;
+  unit: CropUnit;
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+  linked: boolean;
+  scope: 'all' | 'current';
+}
+
 export interface WatermarkConfig {
+  watermarkEnabled: boolean;
   type: WatermarkType;
   positionMode: PositionMode;
   gridPosition: GridPosition;
@@ -67,6 +81,7 @@ export interface WatermarkConfig {
   tileSettings: TileSettings;
   text: TextWatermarkConfig;
   image: ImageWatermarkConfig;
+  crop: CropConfig;
 }
 
 export type FileType = 'image' | 'pdf';
