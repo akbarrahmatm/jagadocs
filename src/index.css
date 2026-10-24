@@ -1,138 +1,159 @@
 @import "tailwindcss";
 
 @layer base {
+  :root {
+    --bg-primary: #FAF8F2;
+    --text-primary: #2B2B2B;
+    --accent-navy: #212635;
+    --grass-green: #7CB342;
+    --sky-blue: #4FC3F7;
+    --soft-pink: #F48FB1;
+    --warm-border: rgba(43, 43, 43, 0.09);
+    --card-surface: #FFFFFF;
+    --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+
   * {
     box-sizing: border-box;
   }
+
   body {
     margin: 0;
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #050714;
-    color: #f1f5f9;
-    min-height: 100vh;
+    font-family: 'Quicksand', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100dvh;
     overflow-x: hidden;
-    perspective: 1200px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  code, pre, kbd {
+    font-family: 'JetBrains Mono', monospace;
   }
 }
 
-/* Antigravity Floating Keyframes */
-@keyframes floatSlow {
+/* Subtle Ghibli Watercolor Paper Texture & Grain */
+.bg-ghibli-parchment {
+  background-color: #FAF8F2;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(124, 179, 66, 0.035) 0%, transparent 40%),
+    radial-gradient(circle at 85% 15%, rgba(79, 195, 247, 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(244, 143, 177, 0.035) 0%, transparent 50%),
+    radial-gradient(circle at 20% 90%, rgba(124, 179, 66, 0.025) 0%, transparent 35%);
+}
+
+/* Gentle Nature & Narrative Animations */
+@keyframes gentleBreeze {
   0%, 100% {
     transform: translateY(0px) rotate(0deg);
   }
   50% {
-    transform: translateY(-10px) rotate(1deg);
+    transform: translateY(-4px) rotate(0.4deg);
   }
 }
 
-@keyframes floatOrb1 {
+@keyframes floatCloudSlow {
   0%, 100% {
-    transform: translate(0px, 0px) scale(1);
+    transform: translateX(0px);
   }
   50% {
-    transform: translate(30px, -25px) scale(1.08);
+    transform: translateX(12px);
   }
 }
 
-@keyframes floatOrb2 {
+@keyframes mapDotPulse {
   0%, 100% {
-    transform: translate(0px, 0px) scale(1);
+    opacity: 0.6;
+    transform: scale(1);
   }
   50% {
-    transform: translate(-35px, 20px) scale(1.12);
+    opacity: 1;
+    transform: scale(1.15);
   }
 }
 
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.4;
-    filter: blur(40px);
-  }
-  50% {
-    opacity: 0.7;
-    filter: blur(60px);
-  }
+.animate-breeze {
+  animation: gentleBreeze 4s ease-in-out infinite;
 }
 
-.animate-float-slow {
-  animation: floatSlow 6s ease-in-out infinite;
+.animate-cloud-slow {
+  animation: floatCloudSlow 8s ease-in-out infinite;
 }
 
-.animate-orb-1 {
-  animation: floatOrb1 12s ease-in-out infinite;
+.animate-dot-pulse {
+  animation: mapDotPulse 2.5s ease-in-out infinite;
 }
 
-.animate-orb-2 {
-  animation: floatOrb2 15s ease-in-out infinite;
+/* Ghibli Narrative Card Surfaces */
+.ghibli-card {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(43, 43, 43, 0.09);
+  border-radius: 15px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 240ms ease-out, box-shadow 240ms ease-out, border-color 240ms ease-out;
 }
 
-.animate-pulse-glow {
-  animation: pulseGlow 8s ease-in-out infinite;
+.ghibli-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border-color: rgba(43, 43, 43, 0.16);
 }
 
-/* Glassmorphism Styles */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 
-    0 20px 50px -10px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+.ghibli-card-elevated {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(43, 43, 43, 0.1);
+  border-radius: 30px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
 }
 
-.glass-card {
-  background: rgba(30, 41, 59, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 
-    0 10px 30px -5px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+/* Ghibli Custom Rounded Scale */
+.rounded-ghibli-sm {
+  border-radius: 15px;
+}
+.rounded-ghibli-md {
+  border-radius: 30px;
+}
+.rounded-ghibli-lg {
+  border-radius: 45px;
 }
 
-.glass-pill {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Narrative Waypoint Trail Line */
+.narrative-path-line {
+  background-image: radial-gradient(circle, #7CB342 2px, transparent 2.5px);
+  background-size: 14px 14px;
 }
 
-/* Spatial Grid Background */
-.bg-spatial-grid {
-  background-size: 40px 40px;
+/* Interactive Canvas Checkerboard for Transparency */
+.bg-canvas-checkerboard {
+  background-color: #f5f3ec;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(45deg, #eae6dc 25%, transparent 25%), 
+    linear-gradient(-45deg, #eae6dc 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #eae6dc 75%), 
+    linear-gradient(-45deg, transparent 75%, #eae6dc 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
 }
 
-/* Transparent Canvas Checkerboard */
-.bg-checkerboard {
-  background-color: #0b1120;
-  background-image: 
-    linear-gradient(45deg, #060913 25%, transparent 25%), 
-    linear-gradient(-45deg, #060913 25%, transparent 25%), 
-    linear-gradient(45deg, transparent 75%, #060913 75%), 
-    linear-gradient(-45deg, transparent 75%, #060913 75%);
-  background-size: 20px 20px;
-  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-}
-
-/* Custom Scrollbars */
+/* Custom Friendly Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #FAF8F2;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(43, 43, 43, 0.2);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(43, 43, 43, 0.35);
 }
 
+/* Accessibility: Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;

@@ -1,0 +1,169 @@
+- generic [ref=f1e4]:
+  - banner [ref=f1e289]:
+    - generic [ref=f1e290]:
+      - generic [ref=f1e291]:
+        - button "Feature Map" [ref=f1e292]
+        - generic [ref=f1e302] [cursor=pointer]:
+          - generic [ref=f1e303]: JagaDocs Studio
+          - generic [ref=f1e304]: 1 File
+      - generic [ref=f1e305]: Local In-Memory Browser Execution • 100% Private
+      - generic [ref=f1e310]:
+        - button "Presets" [ref=f1e312] [cursor=pointer]
+        - button "+ PDF Sample" [ref=f1e315] [cursor=pointer]
+        - button "+ Photo Sample" [ref=f1e320] [cursor=pointer]
+        - button "Clear All" [ref=f1e326] [cursor=pointer]
+  - main [ref=f1e28]:
+    - generic [ref=f1e332]:
+      - generic [ref=f1e333]: Add Files
+      - generic [ref=f1e340]:
+        - generic [ref=f1e341]:
+          - generic [ref=f1e342]: Document Queue (1)
+          - generic [ref=f1e344]: Click thumbnail to preview
+        - generic [ref=f1e346] [cursor=pointer]:
+          - button "Remove file" [ref=f1e347]
+          - generic [ref=f1e351]:
+            - img "annual_financial_report_2026.pdf" [ref=f1e352]
+            - generic [ref=f1e353]: PDF (3p)
+          - generic [ref=f1e355]:
+            - paragraph [ref=f1e356]: annual_financial_report_2026.pdf
+            - generic [ref=f1e357]:
+              - generic [ref=f1e358]: 2.3 KB
+              - generic [ref=f1e359]: 893x1263
+    - generic [ref=f1e360]:
+      - generic [ref=f1e362]:
+        - generic [ref=f1e363]:
+          - generic [ref=f1e364]:
+            - generic [ref=f1e365]:
+              - button "Watermark" [ref=f1e366] [cursor=pointer]
+              - button "Crop & Trim" [ref=f1e372] [cursor=pointer]
+            - generic [ref=f1e377]:
+              - button "Previous page" [disabled] [ref=f1e378] [cursor=pointer]
+              - generic [ref=f1e381]: 1/3
+              - button "Next page" [ref=f1e385] [cursor=pointer]
+          - generic [ref=f1e388]:
+            - button "Compare" [ref=f1e389] [cursor=pointer]
+            - generic [ref=f1e394]:
+              - button "Zoom out" [ref=f1e395] [cursor=pointer]
+              - button "100%" [ref=f1e399] [cursor=pointer]
+              - button "Zoom in" [ref=f1e400] [cursor=pointer]
+        - generic [ref=f1e410]:
+          - generic [ref=f1e412]:
+            - text: "Layout Mode:"
+            - strong [ref=f1e413]: grid (center)
+          - generic [ref=f1e414]: 420 × 594 mm (1190 × 1684 pt) • Page 1/3
+      - generic [ref=f1e417]:
+        - generic [ref=f1e418]:
+          - button "Watermark Studio" [ref=f1e419] [cursor=pointer]
+          - button "Crop & Margin" [ref=f1e425] [cursor=pointer]
+        - generic [ref=f1e430]:
+          - generic [ref=f1e431]:
+            - generic [ref=f1e436]:
+              - generic [ref=f1e437]: Watermark Stamp
+              - text: Enabled on export
+            - checkbox [checked] [ref=f1e439]
+          - generic [ref=f1e441]:
+            - generic [ref=f1e442]: Watermark Type
+            - generic [ref=f1e443]:
+              - button "Text Watermark" [ref=f1e444] [cursor=pointer]
+              - button "Logo / Stamp" [ref=f1e448] [cursor=pointer]
+          - generic [ref=f1e454]:
+            - generic [ref=f1e455]:
+              - generic [ref=f1e456]:
+                - generic [ref=f1e457]: Watermark Text
+                - generic [ref=f1e458]: Multi-line support
+              - textbox "e.g. CONFIDENTIAL, OFFICIAL COPY 2026" [ref=f1e459]: CONFIDENTIAL
+              - generic [ref=f1e460]:
+                - generic [ref=f1e461]: "Tokens:"
+                - button "+ Date" [ref=f1e462] [cursor=pointer]
+                - button "+ Year" [ref=f1e463] [cursor=pointer]
+                - button "+ Filename" [ref=f1e464] [cursor=pointer]
+                - 'button "+ Page #" [ref=f1e465] [cursor=pointer]'
+            - generic [ref=f1e466]:
+              - generic [ref=f1e467]:
+                - generic [ref=f1e468]: Font Family
+                - combobox [ref=f1e469] [cursor=pointer]:
+                  - option "Helvetica / Arial (Clean Sans)" [selected]
+                  - option "Times New Roman (Classic Serif)"
+                  - option "Georgia (Warm Serif)"
+                  - option "Courier New (Monospace / Code)"
+                  - option "Impact (Bold Display)"
+                  - option "Trebuchet MS (Modern Sans)"
+                  - option "Verdana (Readable)"
+              - generic [ref=f1e470]:
+                - generic [ref=f1e471]: Font Style
+                - generic [ref=f1e472]:
+                  - button "Bold" [ref=f1e473] [cursor=pointer]
+                  - button "Italic" [ref=f1e476] [cursor=pointer]
+                  - button "Underline" [ref=f1e479] [cursor=pointer]
+            - generic [ref=f1e482]:
+              - generic [ref=f1e483]:
+                - generic [ref=f1e484]:
+                  - generic [ref=f1e485]: Font Scale
+                  - generic [ref=f1e486]: 10%
+                - slider [ref=f1e487] [cursor=pointer]: "10"
+              - generic [ref=f1e488]:
+                - generic [ref=f1e489]:
+                  - generic [ref=f1e490]: Opacity
+                  - generic [ref=f1e491]: 55%
+                - slider [ref=f1e492] [cursor=pointer]: "0.55"
+            - generic [ref=f1e493]:
+              - generic [ref=f1e494]:
+                - generic [ref=f1e495]: Watermark Color
+                - generic [ref=f1e496]:
+                  - textbox [ref=f1e497] [cursor=pointer]: "#7cb342"
+                  - generic [ref=f1e498]:
+                    - button "#dc2626" [ref=f1e499] [cursor=pointer]
+                    - button "#ef4444" [ref=f1e500] [cursor=pointer]
+                    - button "#f97316" [ref=f1e501] [cursor=pointer]
+                    - button "#7cb342" [ref=f1e502] [cursor=pointer]
+                    - button "#2e7d32" [ref=f1e503] [cursor=pointer]
+                    - button "#0288d1" [ref=f1e504] [cursor=pointer]
+                    - button "#212635" [ref=f1e505] [cursor=pointer]
+                    - button "#c2185b" [ref=f1e506] [cursor=pointer]
+              - generic [ref=f1e507]:
+                - generic [ref=f1e508]:
+                  - generic [ref=f1e509]: Rotation Angle
+                  - generic [ref=f1e510]: "-30°"
+                - slider [ref=f1e511] [cursor=pointer]: "-30"
+                - generic [ref=f1e512]:
+                  - button "-45°" [ref=f1e513] [cursor=pointer]
+                  - button "0°" [ref=f1e514] [cursor=pointer]
+                  - button "45°" [ref=f1e515] [cursor=pointer]
+                  - button "90°" [ref=f1e516] [cursor=pointer]
+            - button "Outline, Drop Shadow & Badge Container" [ref=f1e518] [cursor=pointer]
+          - generic [ref=f1e524]:
+            - generic [ref=f1e525]: Position & Pattern
+            - generic [ref=f1e526]:
+              - button "9-Grid" [ref=f1e527] [cursor=pointer]
+              - button "Custom Drag" [ref=f1e531] [cursor=pointer]
+              - button "Tile Matrix" [ref=f1e534] [cursor=pointer]
+            - generic [ref=f1e540]:
+              - button "TL" [ref=f1e541] [cursor=pointer]
+              - button "TC" [ref=f1e542] [cursor=pointer]
+              - button "TR" [ref=f1e543] [cursor=pointer]
+              - button "CL" [ref=f1e544] [cursor=pointer]
+              - button "C" [ref=f1e545] [cursor=pointer]
+              - button "CR" [ref=f1e546] [cursor=pointer]
+              - button "BL" [ref=f1e547] [cursor=pointer]
+              - button "BC" [ref=f1e548] [cursor=pointer]
+              - button "BR" [ref=f1e549] [cursor=pointer]
+          - generic [ref=f1e550]:
+            - generic [ref=f1e551]: PDF Page Watermark Scope
+            - combobox [ref=f1e558] [cursor=pointer]:
+              - option "Watermark All Pages" [selected]
+              - option "First Page Only"
+              - option "Last Page Only"
+              - option "Custom Page Range (e.g. 1-3, 5)"
+  - generic [ref=f1e560]:
+    - generic [ref=f1e561]:
+      - generic [ref=f1e562]:
+        - generic [ref=f1e563]: "Export Format:"
+        - combobox [ref=f1e564] [cursor=pointer]:
+          - option "Original (Auto)" [selected]
+          - option "PNG (Lossless)"
+          - option "JPEG (Compressed)"
+          - option "WebP (Modern)"
+      - button "File Naming" [ref=f1e565] [cursor=pointer]
+    - generic [ref=f1e570]:
+      - button "Download Active PDF" [ref=f1e571] [cursor=pointer]
+      - button "Download All (1) as ZIP" [ref=f1e576] [cursor=pointer]

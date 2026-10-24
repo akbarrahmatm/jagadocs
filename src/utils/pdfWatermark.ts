@@ -6,6 +6,7 @@ import type {
   WatermarkConfig,
 } from '../types/watermark';
 import { parseWatermarkTokens } from './tokenParser';
+import { toPoints } from './cropUtils';
 
 /**
  * Converts Hex color string (#RRGGBB) to RGB (0..1)
@@ -169,9 +170,11 @@ export async function watermarkPdfDocument(options: WatermarkPdfOptions): Promis
     }
   }
 
+  const isWatermarkEnabled = config.watermarkEnabled !== false && config.type !== 'none';
+
   // Embed logo image if Image watermark type
   let embeddedImage: PDFImage | null = null;
-  if (config.type === 'image' && config.image.imageUrl) {
+  if (isWatermarkEnabled && config.type === 'image' && config.image.imageUrl) {
     try {
       const { bytes, format } = await fetchImageBytes(config.image.imageUrl);
       if (format === 'jpg') {
@@ -185,22 +188,61 @@ export async function watermarkPdfDocument(options: WatermarkPdfOptions): Promis
   }
 
   // Embed Font if Text watermark type
-  const stdFont = getStandardFont(
-    config.text.fontFamily,
-    config.text.bold,
-    config.text.italic
-  );
-  const pdfFont = await pdfDoc.embedFont(stdFont);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let pdfFont: any = null;
+  if (isWatermarkEnabled && config.type === 'text') {
+    const stdFont = getStandardFont(
+      config.text.fontFamily,
+      config.text.bold,
+      config.text.italic
+    );
+    pdfFont = await pdfDoc.embedFont(stdFont);
+  }
 
-  // Process target pages
+  const isCropActive =
+    !!config.crop?.enabled &&
+    (config.crop.top > 0 ||
+      config.crop.bottom > 0 ||
+      config.crop.left > 0 ||
+      config.crop.right > 0);
+
+  // Process pages for cropping and watermarking
   for (let pageIdx = 0; pageIdx < totalPages; pageIdx++) {
     const pageNum = pageIdx + 1;
-    if (!targetPages.has(pageNum)) continue;
-
     const page = pdfDoc.getPage(pageIdx);
-    const { width, height } = page.getSize();
 
-    if (config.type === 'text') {
+    const mediaBox = page.getMediaBox();
+    const origX = mediaBox.x || 0;
+    const origY = mediaBox.y || 0;
+    const origW = mediaBox.width || page.getWidth();
+    const origH = mediaBox.height || page.getHeight();
+
+    let pageX = origX;
+    let pageY = origY;
+    let width = origW;
+    let height = origH;
+
+    // Apply PDF edge cropping / trimming
+    if (isCropActive) {
+      const cropL = Math.max(0, toPoints(config.crop.left, config.crop.unit, origW));
+      const cropR = Math.max(0, toPoints(config.crop.right, config.crop.unit, origW));
+      const cropT = Math.max(0, toPoints(config.crop.top, config.crop.unit, origH));
+      const cropB = Math.max(0, toPoints(config.crop.bottom, config.crop.unit, origH));
+
+      pageX = origX + cropL;
+      pageY = origY + cropB;
+      width = Math.max(20, origW - cropL - cropR);
+      height = Math.max(20, origH - cropT - cropB);
+
+      page.setMediaBox(pageX, pageY, width, height);
+      page.setCropBox(pageX, pageY, width, height);
+      page.setTrimBox(pageX, pageY, width, height);
+      page.setBleedBox(pageX, pageY, width, height);
+    }
+
+    if (!isWatermarkEnabled || !targetPages.has(pageNum)) continue;
+
+    if (config.type === 'text' && pdfFont) {
       const parsedText = parseWatermarkTokens(config.text.text, {
         filename,
         page: pageNum,
@@ -239,7 +281,10 @@ export async function watermarkPdfDocument(options: WatermarkPdfOptions): Promis
       const cos = Math.cos(rad);
       const sin = Math.sin(rad);
 
-      const drawTextAtCenter = (cx: number, cy: number) => {
+      const drawTextAtCenter = (relX: number, relY: number) => {
+        const cx = pageX + relX;
+        const cy = pageY + relY;
+
         // Draw background rectangle if enabled
         if (config.text.background) {
           const pad = (config.text.bgPadding * fontSize) / 24;
@@ -329,7 +374,10 @@ export async function watermarkPdfDocument(options: WatermarkPdfOptions): Promis
       const cos = Math.cos(rad);
       const sin = Math.sin(rad);
 
-      const drawImageAtCenter = (cx: number, cy: number) => {
+      const drawImageAtCenter = (relX: number, relY: number) => {
+        const cx = pageX + relX;
+        const cy = pageY + relY;
+
         const lx = -targetW / 2;
         const ly = -targetH / 2;
         const rx = cx + lx * cos - ly * sin;

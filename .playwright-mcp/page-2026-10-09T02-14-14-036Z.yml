@@ -1,0 +1,154 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e13] [cursor=pointer]:
+        - generic [ref=e14]:
+          - heading "JagaDocs" [level=1] [ref=e15]
+          - generic [ref=e16]: PDF & Photo
+        - paragraph [ref=e17]: Secure watermark studio for photos & multi-page PDFs
+      - generic [ref=e18]: 100% Client-Side • Local Processing
+      - generic [ref=e23]:
+        - button "Presets" [ref=e25] [cursor=pointer]
+        - button "Clear (1)" [ref=e113] [cursor=pointer]
+  - main [ref=e42]:
+    - generic [ref=e43]:
+      - generic [ref=e124]:
+        - generic [ref=e125]: Add Files
+        - generic [ref=e132]:
+          - generic [ref=e133]:
+            - generic [ref=e134]: Queue (1)
+            - generic [ref=e136]: Select to preview
+          - generic [ref=e138] [cursor=pointer]:
+            - button "Remove file" [ref=e139]
+            - generic [ref=e143]:
+              - img "annual_financial_report_2026.pdf" [ref=e144]
+              - generic [ref=e145]: PDF (3p)
+            - generic [ref=e147]:
+              - paragraph [ref=e148]: annual_financial_report_2026.pdf
+              - paragraph [ref=e149]:
+                - generic [ref=e150]: 2.3 KB
+                - generic [ref=e151]: 893×1263
+      - generic [ref=e90]:
+        - generic [ref=e152]:
+          - generic [ref=e153]:
+            - generic [ref=e154]:
+              - generic [ref=e155]:
+                - button "Watermark" [ref=e156] [cursor=pointer]
+                - button "Crop / Trim" [ref=e162] [cursor=pointer]
+              - generic [ref=e167]:
+                - button "Previous page" [disabled] [ref=e168] [cursor=pointer]
+                - generic [ref=e171]: 1/3
+                - button "Next page" [ref=e172] [cursor=pointer]
+            - generic [ref=e175]:
+              - generic [ref=e359]:
+                - button "Guides" [ref=e360] [cursor=pointer]
+                - button "Cropped" [ref=e361] [cursor=pointer]
+              - button "Auto Trim" [ref=e362] [cursor=pointer]
+              - generic [ref=e181]:
+                - button "Zoom out" [ref=e182] [cursor=pointer]
+                - button "100%" [ref=e186] [cursor=pointer]
+                - button "Zoom in" [ref=e187] [cursor=pointer]
+          - generic "Drag to reposition crop area" [ref=e368]: 1190 × 1684 px
+          - generic [ref=e194]:
+            - generic [ref=e195]: Drag handles or use sidebar sliders to trim page edges
+            - generic [ref=e198]: 420 × 594 mm (1190 × 1684 pt) • Page 1/3
+        - generic [ref=e200]:
+          - generic [ref=e201]:
+            - button "Watermark Studio" [ref=e202] [cursor=pointer]
+            - button "PDF Crop & Trim" [active] [ref=e208] [cursor=pointer]
+          - generic [ref=e384]:
+            - generic [ref=e385]:
+              - generic [ref=e391]:
+                - generic [ref=e392]: Edge Crop & Margin Trim
+                - text: Disabled / Full page
+              - checkbox [ref=e394]
+            - generic [ref=e396]:
+              - generic [ref=e397]: 1-Click Trim Presets
+              - generic [ref=e399]:
+                - button "Scanner Edge Clean (3 mm) Trims small dark border lines and artifacts from scanned PDFs Scanned Docs" [ref=e400] [cursor=pointer]:
+                  - generic [ref=e401]:
+                    - generic [ref=e402]: Scanner Edge Clean (3 mm)
+                    - paragraph [ref=e404]: Trims small dark border lines and artifacts from scanned PDFs
+                  - generic [ref=e405]: Scanned Docs
+                - button "Standard Margins (10 mm) Clean uniform 10mm border trim around all sides Uniform" [ref=e406] [cursor=pointer]:
+                  - generic [ref=e407]:
+                    - generic [ref=e408]: Standard Margins (10 mm)
+                    - paragraph [ref=e410]: Clean uniform 10mm border trim around all sides
+                  - generic [ref=e411]: Uniform
+                - button "Header & Footer Trim (15 mm) Removes unwanted headers, footers, page numbers, or URLs Headers/Footers" [ref=e412] [cursor=pointer]:
+                  - generic [ref=e413]:
+                    - generic [ref=e414]: Header & Footer Trim (15 mm)
+                    - paragraph [ref=e416]: Removes unwanted headers, footers, page numbers, or URLs
+                  - generic [ref=e417]: Headers/Footers
+                - button "Hole Punch / Binding Trim (15 mm Left) Trims left margin for punched holes, staples or binder shadows Binding" [ref=e418] [cursor=pointer]:
+                  - generic [ref=e419]:
+                    - generic [ref=e420]: Hole Punch / Binding Trim (15 mm Left)
+                    - paragraph [ref=e422]: Trims left margin for punched holes, staples or binder shadows
+                  - generic [ref=e423]: Binding
+                - button "5% Outer Margin Trim Proportional 5% trim on all 4 sides Proportional" [ref=e424] [cursor=pointer]:
+                  - generic [ref=e425]:
+                    - generic [ref=e426]: 5% Outer Margin Trim
+                    - paragraph [ref=e428]: Proportional 5% trim on all 4 sides
+                  - generic [ref=e429]: Proportional
+            - generic [ref=e430]:
+              - generic [ref=e431]:
+                - generic [ref=e432]: Trim Unit
+                - generic [ref=e433]:
+                  - button "%" [ref=e434] [cursor=pointer]
+                  - button "mm" [ref=e435] [cursor=pointer]
+                  - button "pt" [ref=e436] [cursor=pointer]
+              - generic [ref=e437]:
+                - generic [ref=e438]: Side Ratio
+                - button "Independent" [ref=e439] [cursor=pointer]
+            - generic [ref=e444]:
+              - generic [ref=e445]:
+                - generic [ref=e446]:
+                  - generic [ref=e447]: Top Edge Trim
+                  - generic [ref=e451]:
+                    - spinbutton [ref=e452]: "0"
+                    - generic [ref=e453]: "%"
+                - slider [ref=e454] [cursor=pointer]: "0"
+              - generic [ref=e455]:
+                - generic [ref=e456]:
+                  - generic [ref=e457]: Bottom Edge Trim
+                  - generic [ref=e461]:
+                    - spinbutton [ref=e462]: "0"
+                    - generic [ref=e463]: "%"
+                - slider [ref=e464] [cursor=pointer]: "0"
+              - generic [ref=e465]:
+                - generic [ref=e466]:
+                  - generic [ref=e467]: Left Edge Trim
+                  - generic [ref=e471]:
+                    - spinbutton [ref=e472]: "0"
+                    - generic [ref=e473]: "%"
+                - slider [ref=e474] [cursor=pointer]: "0"
+              - generic [ref=e475]:
+                - generic [ref=e476]:
+                  - generic [ref=e477]: Right Edge Trim
+                  - generic [ref=e481]:
+                    - spinbutton [ref=e482]: "0"
+                    - generic [ref=e483]: "%"
+                - slider [ref=e484] [cursor=pointer]: "0"
+            - generic [ref=e485]:
+              - generic [ref=e486]: Crop Application Scope
+              - generic [ref=e487]:
+                - button "All PDF Pages" [ref=e488] [cursor=pointer]
+                - button "Current Page" [ref=e489] [cursor=pointer]
+            - generic [ref=e490]:
+              - generic [ref=e491]:
+                - generic [ref=e492]: "Original Size:"
+                - generic [ref=e493]: 315 × 446 mm (893 × 1263 pt)
+              - generic [ref=e494]: No margins trimmed (Full page output)
+  - generic [ref=e335]:
+    - generic [ref=e336]:
+      - generic [ref=e337]:
+        - generic [ref=e338]: "Export Format:"
+        - combobox [ref=e339] [cursor=pointer]:
+          - option "Original (Auto)" [selected]
+          - option "PNG (Lossless)"
+          - option "JPEG (Compressed)"
+          - option "WebP (Modern)"
+      - button "File Naming" [ref=e340] [cursor=pointer]
+    - generic [ref=e345]:
+      - button "Download Active PDF" [ref=e346] [cursor=pointer]
+      - button "Download All (1) as ZIP" [ref=e351] [cursor=pointer]

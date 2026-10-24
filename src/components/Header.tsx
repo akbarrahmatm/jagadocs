@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Sparkles, Wand2, Trash2, Image as ImageIcon, FileText } from 'lucide-react';
+import { ShieldCheck, Compass, SlidersHorizontal, Trash2, FileText, Image as ImageIcon, ArrowLeft } from 'lucide-react';
 import type { WatermarkPreset } from '../types/watermark';
 import { WATERMARK_PRESETS } from '../utils/presets';
 
@@ -8,6 +8,8 @@ interface HeaderProps {
   onClearFiles: () => void;
   onLoadSample: (type: 'photo' | 'pdf') => void;
   fileCount: number;
+  onNavigateHome?: () => void;
+  activeFeatureId?: string;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -15,39 +17,50 @@ export const Header: React.FC<HeaderProps> = ({
   onClearFiles,
   onLoadSample,
   fileCount,
+  onNavigateHome,
 }) => {
   const [showPresetDropdown, setShowPresetDropdown] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 bg-slate-950/70 backdrop-blur-2xl border-b border-white/[0.08] px-4 lg:px-8 py-3.5 transition-all shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+    <header className="sticky top-0 z-40 bg-[#FAF8F2]/95 backdrop-blur-md border-b border-[#2B2B2B]/10 px-4 lg:px-8 py-3 transition-all shadow-sm">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-        {/* Brand with glowing aura */}
-        <div className="flex items-center gap-3.5 group cursor-pointer">
-          <div className="relative">
-            <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-50 blur-sm group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative w-10 h-10 rounded-xl bg-slate-900 border border-white/20 flex items-center justify-center shadow-inner">
-              <Sparkles className="w-5 h-5 text-indigo-400 group-hover:rotate-12 transition-transform duration-300" />
+        {/* Brand & Narrative Station Navigation */}
+        <div className="flex items-center gap-3.5">
+          {onNavigateHome && (
+            <button
+              onClick={onNavigateHome}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-ghibli-sm bg-white hover:bg-[#F5F3EC] text-[#2B2B2B] border border-[#2B2B2B]/15 text-xs font-semibold shadow-sm transition-all active:translate-y-[1px]"
+              title="Return to Narrative Feature Map"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 text-[#212635]" />
+              <span className="hidden sm:inline">Feature Map</span>
+            </button>
+          )}
+
+          <div
+            onClick={onNavigateHome}
+            className="flex items-center gap-2.5 cursor-pointer group"
+          >
+            <div className="w-9 h-9 rounded-ghibli-sm bg-white border border-[#2B2B2B]/15 shadow-sm flex items-center justify-center text-[#7CB342] group-hover:scale-105 transition-transform">
+              <Compass className="w-4.5 h-4.5" />
             </div>
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-lg font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent m-0">
-                JagaDocs
-              </h1>
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 shadow-[0_0_12px_rgba(99,102,241,0.2)]">
-                PDF &amp; Photo
-              </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-base sm:text-lg font-bold tracking-tight text-[#2B2B2B]">
+                  JagaDocs Studio
+                </span>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#7CB342]/15 text-[#558B2F] border border-[#7CB342]/30">
+                  {fileCount} {fileCount === 1 ? 'File' : 'Files'}
+                </span>
+              </div>
             </div>
-            <p className="text-xs text-slate-400 m-0 hidden sm:block font-medium">
-              Secure watermark studio for photos &amp; multi-page PDFs
-            </p>
           </div>
         </div>
 
-        {/* Center: Privacy Indicator Badge */}
-        <div className="hidden md:flex items-center gap-2 text-xs text-emerald-300 bg-emerald-950/30 border border-emerald-500/30 px-3.5 py-1.5 rounded-full font-medium shadow-[0_0_20px_rgba(16,185,129,0.15)] backdrop-blur-md">
-          <ShieldCheck className="w-4 h-4 text-emerald-400 animate-pulse" />
-          <span>100% Client-Side • Local Processing</span>
+        {/* Center: Privacy Guarantee Badge */}
+        <div className="hidden md:flex items-center gap-2 text-xs text-[#2E7D32] bg-[#E8F5E9] border border-[#7CB342]/30 px-3.5 py-1.5 rounded-ghibli-sm font-medium shadow-sm">
+          <ShieldCheck className="w-4 h-4 text-[#7CB342]" />
+          <span>Local In-Memory Browser Execution • 100% Private</span>
         </div>
 
         {/* Right Action Bar */}
@@ -56,10 +69,10 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="relative">
             <button
               onClick={() => setShowPresetDropdown(!showPresetDropdown)}
-              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 border border-white/10 hover:border-indigo-500/40 transition-all cursor-pointer shadow-lg hover:shadow-indigo-500/10 active:scale-95"
-              title="Apply pre-built watermark presets"
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-ghibli-sm bg-white hover:bg-[#F5F3EC] text-[#2B2B2B] border border-[#2B2B2B]/15 transition-all cursor-pointer shadow-sm active:translate-y-[1px]"
+              title="Apply watermark style presets"
             >
-              <Wand2 className="w-3.5 h-3.5 text-purple-400" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#212635]" />
               <span>Presets</span>
             </button>
 
@@ -69,10 +82,10 @@ export const Header: React.FC<HeaderProps> = ({
                   className="fixed inset-0 z-40"
                   onClick={() => setShowPresetDropdown(false)}
                 />
-                <div className="absolute right-0 mt-3 w-80 glass-panel rounded-2xl shadow-2xl z-50 p-2.5 text-left border border-white/15 animate-in fade-in zoom-in-95 duration-200">
-                  <div className="px-3 py-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-white/10 mb-1 flex items-center justify-between">
+                <div className="absolute right-0 mt-2.5 w-80 bg-white rounded-ghibli-sm shadow-xl z-50 p-2.5 text-left border border-[#2B2B2B]/15 animate-in fade-in duration-200">
+                  <div className="px-3 py-2 text-[11px] font-bold text-[#2B2B2B]/70 uppercase tracking-wider border-b border-[#2B2B2B]/10 mb-1 flex items-center justify-between">
                     <span>Quick Style Presets</span>
-                    <span className="text-[10px] text-indigo-400">1-Click Apply</span>
+                    <span className="text-[10px] text-[#558B2F]">1-Click Apply</span>
                   </div>
                   <div className="space-y-1 max-h-80 overflow-y-auto pr-1">
                     {WATERMARK_PRESETS.map((preset) => (
@@ -82,19 +95,19 @@ export const Header: React.FC<HeaderProps> = ({
                           onApplyPreset(preset);
                           setShowPresetDropdown(false);
                         }}
-                        className="w-full text-left px-3 py-2.5 rounded-xl hover:bg-indigo-600/20 text-slate-300 text-xs transition-all flex flex-col gap-1 cursor-pointer group border border-transparent hover:border-indigo-500/30"
+                        className="w-full text-left px-3 py-2.5 rounded-ghibli-sm hover:bg-[#F1F8E9] text-[#2B2B2B] text-xs transition-all flex flex-col gap-0.5 cursor-pointer group border border-transparent hover:border-[#7CB342]/30"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="font-bold text-white group-hover:text-indigo-300">
+                          <span className="font-bold text-[#2B2B2B] group-hover:text-[#558B2F]">
                             {preset.name}
                           </span>
                           {preset.badge && (
-                            <span className="text-[9px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 group-hover:bg-indigo-500/30 group-hover:text-indigo-200 border border-white/5">
+                            <span className="text-[9px] font-semibold px-2 py-0.5 rounded-full bg-[#FAF8F2] text-[#2B2B2B]/70 group-hover:bg-[#7CB342]/20 group-hover:text-[#2E7D32] border border-[#2B2B2B]/10">
                               {preset.badge}
                             </span>
                           )}
                         </div>
-                        <span className="text-[11px] text-slate-400 group-hover:text-slate-300 truncate">
+                        <span className="text-[11px] text-[#2B2B2B]/70 truncate">
                           {preset.description}
                         </span>
                       </button>
@@ -105,37 +118,34 @@ export const Header: React.FC<HeaderProps> = ({
             )}
           </div>
 
-          {/* Sample Loaders */}
-          {fileCount === 0 && (
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => onLoadSample('photo')}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 border border-indigo-500/30 transition-all cursor-pointer shadow-sm active:scale-95"
-                title="Load sample photo"
-              >
-                <ImageIcon className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Try Photo</span>
-              </button>
-              <button
-                onClick={() => onLoadSample('pdf')}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 transition-all cursor-pointer shadow-sm active:scale-95"
-                title="Load sample PDF"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Try PDF</span>
-              </button>
-            </div>
-          )}
+          {/* Quick Sample Loaders */}
+          <button
+            onClick={() => onLoadSample('pdf')}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-ghibli-sm bg-white hover:bg-[#F1F8E9] text-[#2B2B2B] border border-[#2B2B2B]/15 transition-all cursor-pointer shadow-sm active:translate-y-[1px]"
+            title="Load sample PDF document"
+          >
+            <FileText className="w-3.5 h-3.5 text-[#7CB342]" />
+            <span>+ PDF Sample</span>
+          </button>
 
-          {/* Clear Files */}
+          <button
+            onClick={() => onLoadSample('photo')}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-ghibli-sm bg-white hover:bg-[#E1F5FE] text-[#2B2B2B] border border-[#2B2B2B]/15 transition-all cursor-pointer shadow-sm active:translate-y-[1px]"
+            title="Load sample Photo"
+          >
+            <ImageIcon className="w-3.5 h-3.5 text-[#0288D1]" />
+            <span>+ Photo Sample</span>
+          </button>
+
+          {/* Clear Files Button */}
           {fileCount > 0 && (
             <button
               onClick={onClearFiles}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/25 transition-all cursor-pointer active:scale-95"
-              title="Remove all uploaded files"
+              className="flex items-center gap-1 px-3 py-2 text-xs font-semibold rounded-ghibli-sm bg-white hover:bg-[#FFEBEE] text-[#C62828] border border-[#C62828]/25 transition-all cursor-pointer shadow-sm active:translate-y-[1px]"
+              title="Clear all loaded files"
             >
-              <Trash2 className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Clear ({fileCount})</span>
+              <Trash2 className="w-3.5 h-3.5 text-[#C62828]" />
+              <span className="hidden sm:inline">Clear All</span>
             </button>
           )}
         </div>
