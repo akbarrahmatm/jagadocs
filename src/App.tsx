@@ -7,8 +7,8 @@ import type {
 } from './types/watermark';
 import { Header } from './components/Header';
 import { NarrativeHeader } from './components/NarrativeHeader';
-import { NarrativeHero } from './components/NarrativeHero';
-import { NarrativeMapStations } from './components/NarrativeMapStations';
+import { ToolGrid } from './components/ToolGrid';
+import { ToolLanding } from './components/ToolLanding';
 import { FileUploader } from './components/FileUploader';
 import { FileList } from './components/FileList';
 import { WatermarkControls } from './components/WatermarkControls';
@@ -19,7 +19,7 @@ import { loadPdfInfo } from './utils/pdfPreview';
 import { createSamplePhoto, createSamplePdf } from './utils/sampleLoader';
 import { DEFAULT_CROP_CONFIG } from './utils/cropUtils';
 import type { CropConfig } from './types/watermark';
-import type { FeatureId } from './modules/featureRegistry';
+import { getToolByRoute, type ToolDefinition } from './modules/featureRegistry';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 
 const DEFAULT_CONFIG: WatermarkConfig = {
@@ -75,14 +75,13 @@ const DEFAULT_EXPORT_SETTINGS: ExportSettings = {
 };
 
 export function App() {
+  const [selectedTool, setSelectedTool] = useState<ToolDefinition | null>(null);
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [activeFileId, setActiveFileId] = useState<string | null>(null);
   const [config, setConfig] = useState<WatermarkConfig>(DEFAULT_CONFIG);
   const [exportSettings, setExportSettings] = useState<ExportSettings>(DEFAULT_EXPORT_SETTINGS);
   const [logoImage, setLogoImage] = useState<HTMLImageElement | null>(null);
   const [activeStudioTab, setActiveStudioTab] = useState<'watermark' | 'crop'>('watermark');
-  const [activeFeatureId, setActiveFeatureId] = useState<FeatureId>('pdf-watermark');
-  const [currentView, setCurrentView] = useState<'map' | 'studio'>('map');
 
   // Export State
   const [isExporting, setIsExporting] = useState(false);
@@ -95,6 +94,21 @@ export function App() {
       setToastMessage((curr) => (curr?.text === text ? null : curr));
     }, 4000);
   };
+
+  // Sync hash route (e.g. #/watermark-pdf, #/crop-pdf, #/)
+  useEffect(() => {
+    const handleHashChange = () => {
+      const tool = getToolByRoute(window.location.hash);
+      setSelectedTool(tool);
+      if (tool) {
+        setActiveStudioTab(tool.studioTab);
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   // Active File Reference
   const activeFile = useMemo(() => {
@@ -125,8 +139,22 @@ export function App() {
     };
   }, [config.image.imageUrl]);
 
+  // Navigate to a tool
+  const handleSelectTool = (tool: ToolDefinition) => {
+    setSelectedTool(tool);
+    setActiveStudioTab(tool.studioTab);
+    window.location.hash = tool.route;
+  };
+
+  const handleBackToAllTools = () => {
+    setSelectedTool(null);
+    setFiles([]);
+    setActiveFileId(null);
+    window.location.hash = '#/';
+  };
+
   // Handle uploaded files
-  const handleFilesSelected = async (newRawFiles: File[], targetFeatureId?: FeatureId) => {
+  const handleFilesSelected = async (newRawFiles: File[]) => {
     const loadedList: UploadedFile[] = [];
 
     for (const file of newRawFiles) {
@@ -186,28 +214,18 @@ export function App() {
       if (!activeFileId) {
         setActiveFileId(loadedList[0].id);
       }
-      if (targetFeatureId) {
-        setActiveFeatureId(targetFeatureId);
-        if (targetFeatureId === 'doc-crop') {
-          setActiveStudioTab('crop');
-        } else {
-          setActiveStudioTab('watermark');
-        }
-      }
-      setCurrentView('studio');
       showToast(`Loaded ${loadedList.length} file(s) successfully!`);
     }
   };
 
-  // Dedicated Sample Loader for Specific Feature Module
-  const handleLoadFeatureSample = async (featureId: FeatureId, type: 'photo' | 'pdf') => {
+  // Dedicated Sample Loader for active tool
+  const handleLoadSample = async (type: 'photo' | 'pdf') => {
     try {
       const sampleItem = type === 'photo' ? await createSamplePhoto() : await createSamplePdf();
       setFiles((prev) => [sampleItem, ...prev]);
       setActiveFileId(sampleItem.id);
-      setActiveFeatureId(featureId);
 
-      if (featureId === 'doc-crop') {
+      if (selectedTool?.id === 'crop-pdf') {
         setActiveStudioTab('crop');
         setConfig((prev) => ({
           ...prev,
@@ -221,28 +239,13 @@ export function App() {
             unit: 'mm',
           },
         }));
-      } else {
-        setActiveStudioTab('watermark');
       }
 
-      setCurrentView('studio');
-      const stationName =
-        featureId === 'pdf-watermark'
-          ? 'PDF Document Pavilion'
-          : featureId === 'image-watermark'
-          ? 'Photo & Imagery Garden'
-          : 'Margin & Crop Atelier';
-      showToast(`Sample for ${stationName} ready to explore!`);
+      showToast(`Sample ${type === 'photo' ? 'Photo' : 'PDF'} loaded!`);
     } catch (err) {
       console.error('Failed to load sample:', err);
       showToast('Could not load sample file', 'error');
     }
-  };
-
-  // Load generic sample
-  const handleLoadSample = async (type: 'photo' | 'pdf') => {
-    const featureId: FeatureId = type === 'pdf' ? 'pdf-watermark' : 'image-watermark';
-    await handleLoadFeatureSample(featureId, type);
   };
 
   // Remove File
@@ -252,9 +255,6 @@ export function App() {
       if (activeFileId === id) {
         setActiveFileId(next.length > 0 ? next[0].id : null);
       }
-      if (next.length === 0) {
-        setCurrentView('map');
-      }
       return next;
     });
   };
@@ -263,7 +263,6 @@ export function App() {
   const handleClearFiles = () => {
     setFiles([]);
     setActiveFileId(null);
-    setCurrentView('map');
     showToast('All files cleared');
   };
 
@@ -410,57 +409,46 @@ export function App() {
         </div>
       )}
 
-      {/* VIEW MODE 1: NARRATIVE MAP HOME */}
-      {currentView === 'map' || files.length === 0 ? (
+      {/* STATE 1: HOMEPAGE TOOLS GRID (Exact PdfBar pattern) */}
+      {!selectedTool && files.length === 0 && (
         <div className="flex-1 flex flex-col">
-          <NarrativeHeader
-            onNavigateHome={() => setCurrentView('map')}
-            onOpenStudio={() => {
-              if (files.length > 0) setCurrentView('studio');
-            }}
-            isStudioActive={files.length > 0 && currentView === 'studio'}
-          />
-
-          <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8">
-            <NarrativeHero
-              onQuickStart={(featureId) => {
-                if (featureId === 'pdf-watermark') {
-                  handleLoadFeatureSample('pdf-watermark', 'pdf');
-                } else if (featureId === 'image-watermark') {
-                  handleLoadFeatureSample('image-watermark', 'photo');
-                } else {
-                  handleLoadFeatureSample('doc-crop', 'pdf');
-                }
-              }}
-            />
-
-            <NarrativeMapStations
-              onLoadFeatureSample={(featureId, type) => handleLoadFeatureSample(featureId, type)}
-              onFilesSelectedForFeature={(selectedFiles, featureId) =>
-                handleFilesSelected(selectedFiles, featureId)
-              }
-            />
+          <NarrativeHeader onNavigateHome={handleBackToAllTools} />
+          <main className="flex-1">
+            <ToolGrid onSelectTool={handleSelectTool} />
           </main>
-
-          <footer className="mt-16 py-8 border-t border-[#2B2B2B]/10 text-center text-xs text-[#2B2B2B]/60 space-y-1">
-            <p className="m-0 font-medium">
-              JagaDocs — Narrative Map Document &amp; Photo Protection Studio.
-            </p>
-            <p className="m-0">
-              100% processed in local browser memory. No server uploads, no telemetry tracking.
-            </p>
+          <footer className="py-6 border-t border-[#2B2B2B]/10 text-center text-xs text-[#2B2B2B]/60">
+            JagaDocs • Free, client-side document and photo utility.
           </footer>
         </div>
-      ) : (
-        /* VIEW MODE 2: ACTIVE STUDIO WORKSPACE */
+      )}
+
+      {/* STATE 2: SPECIFIC TOOL LANDING (No files loaded yet) */}
+      {selectedTool && files.length === 0 && (
+        <div className="flex-1 flex flex-col">
+          <NarrativeHeader onNavigateHome={handleBackToAllTools} />
+          <main className="flex-1 flex items-center justify-center">
+            <ToolLanding
+              tool={selectedTool}
+              onBackToTools={handleBackToAllTools}
+              onFilesSelected={handleFilesSelected}
+              onLoadSample={handleLoadSample}
+            />
+          </main>
+          <footer className="py-6 border-t border-[#2B2B2B]/10 text-center text-xs text-[#2B2B2B]/60">
+            JagaDocs • 100% processed locally in browser memory.
+          </footer>
+        </div>
+      )}
+
+      {/* STATE 3: ACTIVE STUDIO WORKSPACE (Files loaded) */}
+      {files.length > 0 && (
         <div className="flex-1 flex flex-col">
           <Header
             onApplyPreset={handleApplyPreset}
             onClearFiles={handleClearFiles}
             onLoadSample={handleLoadSample}
             fileCount={files.length}
-            onNavigateHome={() => setCurrentView('map')}
-            activeFeatureId={activeFeatureId}
+            onNavigateHome={handleBackToAllTools}
           />
 
           <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 flex flex-col gap-5">
@@ -469,7 +457,7 @@ export function App() {
               <div className="flex items-center gap-3">
                 <div className="w-36 shrink-0">
                   <FileUploader
-                    onFilesSelected={(newFiles) => handleFilesSelected(newFiles, activeFeatureId)}
+                    onFilesSelected={handleFilesSelected}
                     onLoadSample={handleLoadSample}
                     isCompact
                   />

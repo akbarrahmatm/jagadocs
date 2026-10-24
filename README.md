@@ -1,4 +1,4 @@
-# JagaDocs: Ghibli-Inspired Narrative Map Document & Photo Studio
+# JagaDocs: Private Client-Side Document & Photo Suite
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![React 19](https://img.shields.io/badge/React-19-61dafb.svg)](https://react.dev/)
@@ -6,72 +6,61 @@
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8.svg)](https://tailwindcss.com/)
 [![100% Client-Side](https://img.shields.io/badge/Privacy-100%25%20Client--Side-emerald.svg)](#privacy-guarantee)
 
-**JagaDocs** is an artisan-crafted, privacy-first web application designed with a **Ghibli-inspired narrative map interface**. It enables modular batch watermarking, multi-page vector PDF protection, and precision document edge/margin trimming. All file manipulation executes 100% locally inside browser memory (HTML5 Canvas & WebAssembly) with zero server uploads.
+**JagaDocs** is an elegant, modular document and photo utility suite (inspired by [PdfBar](https://pdfbar.netlify.app/) and styled with warm Ghibli parchment aesthetics). It features dedicated, independent tool pages for multi-page vector PDF watermarking, batch photo watermarking, and precision document margin/crop trimming. All processing executes 100% locally in browser memory (WebAssembly & HTML5 Canvas) with zero server uploads.
 
 ---
 
-## Interface & Visual Tour
+## Visual Tour
 
 <p align="center">
-  <img src="docs/ghibli-narrative-landing.png" alt="JagaDocs Ghibli Narrative Map Landing View" width="100%" />
+  <img src="docs/pdfbar-style-home.png" alt="JagaDocs All Tools Grid" width="100%" />
 </p>
-<p align="center"><em>1. Narrative Map Landing: Wayfinding through wonder with dedicated station waypoints.</em></p>
+<p align="center"><em>1. All Tools Home: Clean, direct grid of tools with immediate access and zero clutter.</em></p>
 
 <br/>
 
 <p align="center">
-  <img src="docs/ghibli-studio-pdf-workspace.png" alt="JagaDocs PDF Watermark Studio Workspace" width="100%" />
+  <img src="docs/pdfbar-style-crop-tool.png" alt="Dedicated Tool Landing Page" width="100%" />
 </p>
-<p align="center"><em>2. Multi-Page Vector PDF Studio: Real-time preview canvas, typography controls, and dynamic numbering tokens.</em></p>
+<p align="center"><em>2. Dedicated Tool Page: Direct file dropzone with one-click sample loader for instant testing.</em></p>
 
 <br/>
 
 <p align="center">
-  <img src="docs/ghibli-studio-crop-workspace.png" alt="JagaDocs Document Crop & Margin Trim Atelier" width="100%" />
+  <img src="docs/pdfbar-style-crop-active.png" alt="Interactive Tool Studio Workspace" width="100%" />
 </p>
-<p align="center"><em>3. Margin & Crop Atelier: Interactive 8-handle frame, auto-detection, and standard margin presets.</em></p>
+<p align="center"><em>3. Interactive Studio Workspace: Real-time preview canvas, margin controls, and bottom export actions.</em></p>
 
 ---
 
-## Modular Feature Architecture
+## Available Modular Tools
 
-Instead of merging unrelated tools into a single crowded screen, JagaDocs organizes each capability as an independent **Feature Module** registered in `src/modules/featureRegistry.ts`:
+Every capability operates as a dedicated module registered in `src/modules/featureRegistry.ts`:
 
-### 1. PDF Document Pavilion (`pdf-watermark`)
-- **Native Vector Watermarks**: Embeds crisp scalable vector text and transparent stamps into PDF streams without rasterization.
-- **Dedicated Demo**: Instant 3-page business report demo with dynamic `{page}` and `{totalPages}` tokens.
-- **Page Range Selector**: Apply watermarks to All Pages, First Page Only, Last Page Only, or Custom Ranges (`1, 3-5, 8`).
+1. **Watermark PDF** (`#/watermark-pdf`)
+   - Embeds scalable vector text, transparent logos, and dynamic numbering tokens (`{page}`, `{totalPages}`) into PDF content streams.
+   - Dedicated 3-page sample report for instant testing.
 
-### 2. Photo & Imagery Garden (`image-watermark`)
-- **High-Resolution Batch Processing**: Watermark hundreds of photos in parallel (PNG, JPG, WebP, SVG, BMP).
-- **Dedicated Demo**: High-resolution landscape photo asset (1200x800 px) to test opacity, tilt angle, and badge styles.
-- **Security Tile Matrix**: Seamless repeating watermark patterns with custom horizontal/vertical spacing and diagonal offsets.
-- **Instant ZIP Export**: Download all watermarked photos in an organized `.zip` archive via JSZip.
+2. **Watermark Photo & Image** (`#/watermark-image`)
+   - Batch watermark photos with 9-grid snapping, freeform canvas drag, or repeating security tile matrices.
+   - Dedicated high-resolution landscape photo demo (1200x800).
+   - Package all results in a single organized ZIP archive.
 
-### 3. Margin & Crop Atelier (`doc-crop`)
-- **Interactive 8-Handle Crop Frame**: Drag corners, edges, or the entire frame directly on the canvas.
-- **Dedicated Demo**: Scanned document sample for one-click margin cleanup testing.
-- **Multi-Unit Precision**: Adjust margin trims in `mm`, `pt`, `%`, or `px`.
-- **Pixel White Border Auto-Detection**: Analyzes page pixel data in real time to crop scanner noise and blank margins.
-- **Native PDF Box Vector Crop**: Updates `MediaBox`, `CropBox`, `TrimBox`, and `BleedBox` in PDF binary streams.
+3. **Crop & Trim PDF** (`#/crop-pdf`)
+   - Interactive 8-handle crop frame on canvas to trim scanner noise, binding punch margins, or blank borders.
+   - Pixel-based white border auto-detection and 1-click presets (Scanner Clean 3mm, Standard 10mm, Binding 15mm).
 
----
+4. **PDF to JPG / PNG** (`#/pdf-to-image`)
+   - Export and convert every PDF page into clean, crisp image assets.
 
-## Ghibli Narrative Design System
-
-| Element | Specification |
-|---|---|
-| **Palette** | Parchment (`#FAF8F2`), Charcoal Text (`#2B2B2B`), Deep Slate Navy (`#212635`), Grass Green (`#7CB342`), Sky Blue (`#4FC3F7`), Soft Blossom Pink (`#F48FB1`) |
-| **Typography** | `Quicksand` (Display Hero 700, Body 400, UI Labels 500) + `JetBrains Mono` (Technical values) |
-| **Shapes** | Friendly rounded scale: `sm: 15px`, `md: 30px`, `lg: 45px` |
-| **Elevation** | Warm diffuse ambient lighting, subtle shadow (`0 2px 12px rgba(0,0,0,0.06)`), 1px organic pencil border |
-| **Craftsmanship** | Strictly compliant with Anti-Slop Core rules: zero generic neon glows, zero template card spam, zero em dashes |
+5. **Image to PDF** (`#/image-to-pdf`)
+   - Combine multiple photos and graphics into a single clean PDF document.
 
 ---
 
 ## Privacy Guarantee
 
-All image processing and PDF transformations execute **100% locally in browser memory**:
+All document transformations execute **100% locally in browser memory**:
 
 - Zero server uploads
 - Zero remote database storage
@@ -80,14 +69,14 @@ All image processing and PDF transformations execute **100% locally in browser m
 
 ---
 
-## Getting Started
+## Development
 
 ```bash
 # Clone the repository
-git clone https://github.com/jagadocs/jagadocs.git
+git clone https://github.com/akbarrahmatm/jagadocs.git
 cd jagadocs
 
-# Switch to the redesign branch
+# Switch to the branch
 git checkout feature/ghibli-modular-redesign
 
 # Install dependencies
